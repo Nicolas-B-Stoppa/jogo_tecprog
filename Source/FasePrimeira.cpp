@@ -6,8 +6,7 @@
 namespace Fases {
 
 FasePrimeira::FasePrimeira() {
-    // Chamados aqui (e não no construtor da Fase) porque, dentro do
-    // construtor da mãe, a chamada virtual não chegaria à FasePrimeira.
+    
     criarInimigos();
     criarObstaculos();
 }
@@ -32,7 +31,7 @@ void FasePrimeira::criarMorcegos() {
 
 void FasePrimeira::criarVampiros() {
     // Por enquanto um só, longe do morcego.
-    Entidades::Personagens::Vampiro* pVampiro = new Entidades::Personagens::Vampiro({3500.f, getTopoChao() - 70.f});
+    Entidades::Personagens::Vampiro* pVampiro = new Entidades::Personagens::Vampiro({1700.f, getTopoChao() - 70.f});
     pVampiro->setChao(getTopoChao());
     inimigos.push_back(pVampiro);
 }
