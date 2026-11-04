@@ -12,9 +12,6 @@ file(GLOB_RECURSE FONTES CONFIGURE_DEPENDS
 )
 # Ignora arquivos gerados dentro de build/
 list(FILTER FONTES EXCLUDE REGEX "/build/|/cmake-build-[^/]*/")
-# Código antigo (substituído por Cacador). Apague o
-# arquivo e esta linha quando não precisar mais dele.
-list(FILTER FONTES EXCLUDE REGEX "/Source/Jogador\\.cpp$")
 
 add_executable(jogo ${FONTES})
 # Raiz do projeto como include: #include "Entidades/Personagens/Cacador.hpp"
