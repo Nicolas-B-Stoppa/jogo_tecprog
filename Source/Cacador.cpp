@@ -2,6 +2,7 @@
 
 namespace Entidades::Personagens {
 
+// Personagem(posicao, tamanho, vidas, velocidade)
 Cacador::Cacador(sf::Vector2f posicao)
     : Personagem(posicao, {40.f, 70.f}, 3, 300.f) {
     box.setFillColor(sf::Color(70, 130, 180));

@@ -18,6 +18,7 @@ void Jogo::executar() {
         processarEventos();
 
         cacador.executar();
+        fase1.executar();
         atualizarCamera();
 
         janela.clear(sf::Color(25, 15, 35));   // céu noturno

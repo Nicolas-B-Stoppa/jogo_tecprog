@@ -7,7 +7,7 @@ namespace Entidades::Personagens {
 
 class Vampiro : public Inimigo {
 public:
-    Vampiro();
+    Vampiro(sf::Vector2f posicao = {0.f, 0.f});
     ~Vampiro();
 protected:
     bool esfomeado;

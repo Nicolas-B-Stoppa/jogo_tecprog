@@ -1,5 +1,7 @@
 #include "Fases/Fase.hpp"
 
+#include "Entidades/Personagens/Inimigos/Inimigo.hpp"
+
 namespace Fases {
 
 Fase::Fase(float alturaJanela) : chao({LARGURA, ALTURA_CHAO}) {
@@ -7,10 +9,21 @@ Fase::Fase(float alturaJanela) : chao({LARGURA, ALTURA_CHAO}) {
     chao.setPosition({0.f, alturaJanela - ALTURA_CHAO});
 }
 
-Fase::~Fase() {}
+Fase::~Fase() {
+    for (Entidades::Personagens::Inimigo* pIni : inimigos)
+        delete pIni;
+    inimigos.clear();
+}
+
+void Fase::executar() {
+    for (Entidades::Personagens::Inimigo* pIni : inimigos)
+        pIni->executar();
+}
 
 void Fase::desenhar(sf::RenderWindow& janela) const {
     janela.draw(chao);
+    for (Entidades::Personagens::Inimigo* pIni : inimigos)
+        pIni->desenhar(janela);
 }
 
 float Fase::getLargura() const {

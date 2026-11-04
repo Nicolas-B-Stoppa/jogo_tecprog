@@ -1,9 +1,40 @@
 #include "Fases/FasePrimeira.hpp"
 
+#include "Entidades/Personagens/Inimigos/Morcego.hpp"
+#include "Entidades/Personagens/Inimigos/Vampiro.hpp"
+
 namespace Fases {
 
-FasePrimeira::FasePrimeira() {}
+FasePrimeira::FasePrimeira() {
+    // Chamados aqui (e não no construtor da Fase) porque, dentro do
+    // construtor da mãe, a chamada virtual não chegaria à FasePrimeira.
+    criarInimigos();
+    criarObstaculos();
+}
 
 FasePrimeira::~FasePrimeira() {}
+
+void FasePrimeira::criarInimigos() {
+    criarMorcegos();
+    criarVampiros();
+}
+
+void FasePrimeira::criarObstaculos() {
+    // TODO: gosmas e plataformas
+}
+
+void FasePrimeira::criarMorcegos() {
+    // Por enquanto um só, voando no começo da fase.
+    Entidades::Personagens::Morcego* pMorcego = new Entidades::Personagens::Morcego({1200.f, 520.f});
+    pMorcego->setChao(getTopoChao());
+    inimigos.push_back(pMorcego);
+}
+
+void FasePrimeira::criarVampiros() {
+    // Por enquanto um só, longe do morcego.
+    Entidades::Personagens::Vampiro* pVampiro = new Entidades::Personagens::Vampiro({3500.f, getTopoChao() - 70.f});
+    pVampiro->setChao(getTopoChao());
+    inimigos.push_back(pVampiro);
+}
 
 } // namespace Fases

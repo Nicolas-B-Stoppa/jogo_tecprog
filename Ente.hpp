@@ -3,5 +3,5 @@
 class Ente {
 public:
     Ente();
-    ~Ente();
+    virtual ~Ente();   // virtual: delete por ponteiro da mãe chama o destrutor certo
 };

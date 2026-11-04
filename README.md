@@ -10,6 +10,4 @@ vampiro
 drácula(sangue/morcego)
 Personagem:
 ataque com espada
-
-
 */
