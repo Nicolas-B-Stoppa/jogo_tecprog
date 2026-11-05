@@ -9,7 +9,7 @@ public:
     Gosma();
     ~Gosma();
 protected:
-    float slow;
+    float slow; //quantidade reduzida da velocidade do caçador ao passar pela gosma.
 
 };
 
