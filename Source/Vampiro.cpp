@@ -21,6 +21,7 @@ void Vampiro::danificar(Cacador* pcaca){
         (*pcaca)--;
     }
     (*pcaca)--;
+    pcaca->sofrerKnockback(this);   // this = o vampiro que causou o dano
 }
 
 } // namespace Entidades::Personagens

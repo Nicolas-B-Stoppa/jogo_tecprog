@@ -33,8 +33,7 @@ public:
     Lista() : pPrimeiro(nullptr), pUltimo(nullptr), tamanho(0) {}
     ~Lista() { limpar(); }
 
-    // Copiar a lista faria duas listas apontarem para os mesmos nós
-    // (e os dois destrutores deletarem os mesmos nós), então é proibido.
+    
     Lista(const Lista&) = delete;
     Lista& operator=(const Lista&) = delete;
 

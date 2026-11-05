@@ -22,6 +22,7 @@ void Morcego::danificar(Cacador* pcaca) {
     if(vampiro)
         (*this)++;
     (*pcaca)--;
+    pcaca->sofrerKnockback(this);   // this = o morcego que causou o dano
 }
 
 void Morcego::mover() {

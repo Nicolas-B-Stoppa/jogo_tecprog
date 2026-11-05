@@ -9,6 +9,7 @@ Jogo::Jogo()
       cacador({100.f, 300.f}) {
     janela.setFramerateLimit(60);
     cacador.setChao(fase1.getTopoChao());
+    fase1.setJogadores(&cacador);
 }
 
 Jogo::~Jogo() {}

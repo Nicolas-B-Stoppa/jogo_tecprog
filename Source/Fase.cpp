@@ -15,9 +15,22 @@ Fase::~Fase() {
     inimigos.clear();
 }
 
+void Fase::incluirInimigo(Entidades::Personagens::Inimigo* pIni) {
+    if (!pIni)
+        return;
+    inimigos.push_back(pIni);
+    gerColisoes.incluirInimigo(pIni);
+}
+
+void Fase::setJogadores(Entidades::Personagens::Cacador* pj1, Entidades::Personagens::Cacador* pj2) {
+    gerColisoes.setJogadores(pj1, pj2);
+}
+
 void Fase::executar() {
     for (Entidades::Personagens::Inimigo* pIni : inimigos)
         pIni->executar();
+
+    gerColisoes.executar();   // depois de todo mundo se mover
 }
 
 void Fase::desenhar(sf::RenderWindow& janela) const {

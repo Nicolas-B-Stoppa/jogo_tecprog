@@ -14,6 +14,7 @@ public:
 
     void executar() override;
     void salvar() override;
+    virtual void danificar(Cacador* pcaca)=0;
 protected:
     int maldade;
     float angulo;              // avança com o tempo e gera o movimento periódico
@@ -22,7 +23,6 @@ protected:
 
     void avancarAngulo();
     void mover() override;     // padrão: vai-e-vem horizontal
-    virtual void danificar(Cacador* pcaca)=0;
 };
 
 } // namespace Entidades::Personagens
