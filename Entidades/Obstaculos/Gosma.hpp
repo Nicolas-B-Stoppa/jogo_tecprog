@@ -8,6 +8,9 @@ class Gosma : public Obstaculo {
 public:
     Gosma();
     ~Gosma();
+protected:
+    float slow;
+
 };
 
 } // namespace Entidades::Obstaculos
