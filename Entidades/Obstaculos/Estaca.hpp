@@ -9,7 +9,7 @@ public:
     Estaca();
     ~Estaca();
 protected:
-    int dano;
+    int dano; //qantia reduzida da vida do jogador ao encostar na estaca.
     
 };
 
