@@ -8,6 +8,9 @@ class Estaca : public Obstaculo {
 public:
     Estaca();
     ~Estaca();
+protected:
+    int dano;
+    
 };
 
 } // namespace Entidades::Obstaculos
