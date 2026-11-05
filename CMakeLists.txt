@@ -16,5 +16,7 @@ list(FILTER FONTES EXCLUDE REGEX "/build/|/cmake-build-[^/]*/")
 add_executable(jogo ${FONTES})
 # Raiz do projeto como include: #include "Entidades/Personagens/Cacador.hpp"
 target_include_directories(jogo PRIVATE ${CMAKE_SOURCE_DIR})
+# Caminho da pasta de imagens, para o jogo achar os sprites de qualquer pasta
+target_compile_definitions(jogo PRIVATE ASSETS_DIR="${CMAKE_SOURCE_DIR}/assets/")
 target_link_libraries(jogo PRIVATE SFML::Graphics SFML::Window SFML::System)
 target_compile_options(jogo PRIVATE -Wall -Wextra -Wpedantic)

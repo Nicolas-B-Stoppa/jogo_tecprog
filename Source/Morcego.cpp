@@ -9,9 +9,11 @@ namespace Entidades::Personagens {
 
 // Inimigo(posicao, tamanho, vidas, velocidade, raio)
 Morcego::Morcego(sf::Vector2f posicao)
-    : Inimigo(posicao, {35.f, 20.f}, 1, 200.f, 250.f),
+    : Inimigo(posicao, {40.f, 40.f}, 1, 200.f, 250.f),
       vampiro(std::rand() % 100 < 30),   // 30% de chance de ser vampiro
-      voo(0.f) {}
+      voo(0.f) {
+    carregarTextura("morcego.png", 6, 0.3f);
+}
 
 Morcego::~Morcego() {}
 

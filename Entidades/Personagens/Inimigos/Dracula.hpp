@@ -6,7 +6,7 @@ namespace Entidades::Personagens {
 
 class Dracula : public Inimigo {
 public:
-    Dracula();
+    Dracula(sf::Vector2f posicao = {0.f, 0.f});
     ~Dracula();
 };
 

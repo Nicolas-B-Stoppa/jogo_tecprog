@@ -18,6 +18,7 @@ void Inimigo::executar() {
     atualizarDt();
     mover();
     aplicarGravidade();
+    animar();
 }
 
 void Inimigo::salvar() {
