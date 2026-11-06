@@ -3,6 +3,7 @@
 #include "Entidades/Entidade.hpp"
 #include "Entidades/Personagens/Cacador.hpp"
 #include "Entidades/Personagens/Inimigos/Inimigo.hpp"
+#include "Entidades/Obstaculo/Obstaculo.hpp"
 
 namespace Gerenciadores {
 
