@@ -9,7 +9,7 @@ public:
     Obstaculo();
     ~Obstaculo();
     virtual void executar() = 0;
-    virtual void obstacularizar(p *Cacador) = 0;
+    virtual void obstacularizar(*Cacador pJog) = 0;
 };
 
 } // namespace Entidades::Obstaculos
