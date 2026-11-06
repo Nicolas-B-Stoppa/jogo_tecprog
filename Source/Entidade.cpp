@@ -1,7 +1,6 @@
 #include "Entidades/Entidade.hpp"
 
 #include <algorithm>
-#include <cstdlib>
 
 #ifndef ASSETS_DIR
 #define ASSETS_DIR "assets/"   // definido pelo CMake; isso é só um padrão
@@ -48,20 +47,7 @@ void Entidade::carregarTextura(const std::string& arquivo, int quadros, float es
     if (!imagem.loadFromFile(std::string(ASSETS_DIR) + arquivo))
         return;   // sem a imagem, a entidade continua sendo desenhada como retângulo
 
-    // Algumas imagens têm fundo branco em vez de transparente: se o canto
-    // for opaco, tudo que tiver quase a mesma cor do canto vira transparente.
     sf::Vector2u tam = imagem.getSize();
-    sf::Color fundo = imagem.getPixel({0, 0});
-    if (fundo.a == 255) {
-        for (unsigned y = 0; y < tam.y; y++) {
-            for (unsigned x = 0; x < tam.x; x++) {
-                sf::Color c = imagem.getPixel({x, y});
-                if (std::abs(c.r - fundo.r) < 25 && std::abs(c.g - fundo.g) < 25 &&
-                    std::abs(c.b - fundo.b) < 25)
-                    imagem.setPixel({x, y}, sf::Color::Transparent);
-            }
-        }
-    }
 
     if (!textura.loadFromImage(imagem))
         return;
