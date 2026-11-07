@@ -74,6 +74,18 @@ void GerenciadorColisoes::colisaoInimigoJog() {
     }
     
 }
+void GerenciadorColisoes::colisaoObstaculoJog() {
+    for(Entidades::Obstaculos::Obstaculo* pObs : LOs) {
+        if(verificaColisao(pObs, pJog1)){
+            pObs->obstacularizar(pJog1);
+        }
+            
+        if(pJog2){
+            if(verificaColisao(pObs, pJog2)){
+                pObs->obstacularizar(pJog2);
+            }
+        }
+    }
 
 } // namespace Gerenciadores
 
