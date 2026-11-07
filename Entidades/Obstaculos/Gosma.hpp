@@ -8,8 +8,11 @@ class Gosma : public Obstaculo {
 public:
     Gosma();
     ~Gosma();
+    void executar() override;
+    void salvar() override;
+    void obstacularizar(*Cacador pJog) override;
 protected:
-    float slow; //quantidade reduzida da velocidade do caçador ao passar pela gosma.
+    bool danoso;
 
 };
 

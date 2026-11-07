@@ -8,8 +8,11 @@ class Estaca : public Obstaculo {
 public:
     Estaca();
     ~Estaca();
+    void executar() override;
+    void salvar() override;
+    void obstacularizar(*Cacador pJog) override;
 protected:
-    int dano; //qantidade reduzida da vida do jogador ao encostar na estaca.
+    bool danoso;
     
 };
 
