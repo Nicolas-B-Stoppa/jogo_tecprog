@@ -15,6 +15,8 @@ namespace Fases {
 
 class Fase : public Ente {
 protected:
+    sf::Texture texturaFundo;
+    sf::RectangleShape fundo;   // background repetido ao longo da fase
     sf::RectangleShape chao;
     std::vector<Entidades::Personagens::Inimigo*> inimigos;   // TEMPORÁRIO: até existir a Lista
     Gerenciadores::GerenciadorColisoes gerColisoes;
