@@ -9,9 +9,13 @@ Dracula::Dracula(sf::Vector2f posicao)
     : Inimigo(posicao, {45.f, 90.f}, 5, 120.f, 150.f),
       pSangue(nullptr) {
     carregarTextura("dracula/andar.png", 6, 1.25f);
+    pSangue = new Sangue(posi, this);   // this = este Drácula: o sangue sabe quem é o dono
 }
 
-Dracula::~Dracula() {}
+Dracula::~Dracula() {
+    delete pSangue;   // o Drácula é dono do sangue
+    pSangue = nullptr;
+}
 
 void Dracula::mover() {
     Inimigo::mover();   // por enquanto: vai-e-vem horizontal padrão
