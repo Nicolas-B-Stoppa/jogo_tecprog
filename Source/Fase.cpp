@@ -10,11 +10,11 @@
 
 namespace Fases {
 
-Fase::Fase(float alturaJanela) : fundo({LARGURA, alturaJanela}), chao({LARGURA, ALTURA_CHAO}) {
+Fase::Fase(float alturaJanela) : fundo({LARGURA, alturaJanela}), topoChao(alturaJanela - ALTURA_CHAO) {
     // Background: escala a imagem para a altura da janela e repete na horizontal
     if (texturaFundo.loadFromFile(std::string(ASSETS_DIR) + "fundo/background.png")) {
         texturaFundo.setRepeated(true);
-        texturaFundo.setSmooth(true);
+        texturaFundo.setSmooth(false);
         sf::Vector2u tam = texturaFundo.getSize();
         float escala = alturaJanela / static_cast<float>(tam.y);
         fundo.setTexture(&texturaFundo);
@@ -23,9 +23,6 @@ Fase::Fase(float alturaJanela) : fundo({LARGURA, alturaJanela}), chao({LARGURA, 
     } else {
         fundo.setFillColor(sf::Color(25, 15, 35));   // sem imagem: céu noturno
     }
-
-    chao.setFillColor(sf::Color(60, 45, 35));   // terra escura
-    chao.setPosition({0.f, alturaJanela - ALTURA_CHAO});
 
     gerColisoes.setTopoChao(getTopoChao());
 }
@@ -65,7 +62,7 @@ float Fase::getLargura() const {
 }
 
 float Fase::getTopoChao() const {
-    return chao.getPosition().y;
+    return topoChao;
 }
 
 } // namespace Fases

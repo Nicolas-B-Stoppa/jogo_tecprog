@@ -28,13 +28,13 @@ void Morcego::danificar(Cacador* pcaca) {
 }
 
 void Morcego::mover() {
-    Inimigo::mover();   // vai-e-vem horizontal
+    Inimigo::mover();   
 
     // O voo anula a gravidade e ainda oscila um pouco, então o morcego
     // sobe e desce em volta da altura onde nasceu. (cos para não ir
     // derivando para cima ou para baixo com o tempo)
     voo = GRAVIDADE + OSCILACAO_VOO * std::cos(SUBIDAS_VOO * angulo);
-    velY -= voo * dt;   // depois o executar() aplica a gravidade
+    velY -= voo * dt;   
 }
 
 } // namespace Entidades::Personagens

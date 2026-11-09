@@ -40,7 +40,7 @@ void Cacador::mover() {
     andando = false;
 
     // Durante o knockback o jogador perde o controle e só é empurrado.
-    if (tempoKnockback > 0.f) {
+    if (estaEmKnockback()) {
         tempoKnockback -= dt;
         posi.x += velKnockback * dt;
         if (posi.x < 0.f)

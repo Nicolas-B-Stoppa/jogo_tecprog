@@ -17,7 +17,7 @@ class Fase : public Ente {
 protected:
     sf::Texture texturaFundo;
     sf::RectangleShape fundo;   // background repetido ao longo da fase
-    sf::RectangleShape chao;
+    float topoChao;             // altura onde os personagens pisam
     Listas::ListaEntidades listaEntidades;   // dona das entidades da fase (deleta no fim)
     Gerenciadores::GerenciadorColisoes gerColisoes;
 
