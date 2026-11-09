@@ -1,9 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <vector>
 
 #include "Ente.hpp"
+#include "Listas/ListaEntidades.hpp"
 #include "Gerenciadores/GerenciadorColisoes.hpp"   // atributo por valor: precisa da classe completa
 
 namespace Entidades::Personagens {
@@ -18,7 +18,7 @@ protected:
     sf::Texture texturaFundo;
     sf::RectangleShape fundo;   // background repetido ao longo da fase
     sf::RectangleShape chao;
-    std::vector<Entidades::Personagens::Inimigo*> inimigos;   // TEMPORÁRIO: até existir a Lista
+    Listas::ListaEntidades listaEntidades;   // dona das entidades da fase (deleta no fim)
     Gerenciadores::GerenciadorColisoes gerColisoes;
 
     static constexpr float LARGURA = 5000.f;      // comprimento da fase
@@ -36,7 +36,7 @@ public:
     void setJogadores(Entidades::Personagens::Cacador* pj1,
                       Entidades::Personagens::Cacador* pj2 = nullptr);
     void executar();
-    void desenhar(sf::RenderWindow& janela) const;
+    void desenhar(sf::RenderWindow& janela);
 
     float getLargura() const;
     float getTopoChao() const;   

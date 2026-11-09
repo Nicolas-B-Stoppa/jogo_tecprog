@@ -6,7 +6,7 @@
 
 namespace Gerenciadores {
 
-GerenciadorColisoes::GerenciadorColisoes() : pJog1(nullptr), pJog2(nullptr) {}
+GerenciadorColisoes::GerenciadorColisoes() : pJog1(nullptr), pJog2(nullptr), topoChao(720.f) {}
 
 GerenciadorColisoes::~GerenciadorColisoes() {
     // Só esvazia as listas; quem deleta as entidades é a ListaEntidades da fase.
@@ -38,6 +38,10 @@ void GerenciadorColisoes::setJogadores(Entidades::Personagens::Cacador* pj1,
     pJog2 = pj2;
 }
 
+void GerenciadorColisoes::setTopoChao(float y) {
+    topoChao = y;
+}
+
 bool GerenciadorColisoes::verificaColisao(Entidades::Entidade* pEnt1, Entidades::Entidade* pEnt2) const{
 
     if (!pEnt1 || !pEnt2)
@@ -51,27 +55,56 @@ bool GerenciadorColisoes::verificaColisao(Entidades::Entidade* pEnt1, Entidades:
 }
 
 void GerenciadorColisoes::executar() {
+    colisaoChao();   // primeiro todo mundo para em cima do chão
     colisaoInimigoJog();
     // TODO: descomentar quando estiverem implementados
     // colisaoObstaculoJog();
     // colisaoProjetilJog();
 }
 
-void GerenciadorColisoes::colisaoInimigoJog() {
+void GerenciadorColisoes::colisaoChao(Entidades::Entidade* pEnt) {
+    if (!pEnt)
+        return;
 
-    for(Entidades::Personagens::Inimigo* pIni : LIs) {
-        \
-        if(verificaColisao(pIni, pJog1) && !pJog1->estaEmKnockback()){
-            pIni->danificar(pJog1);   // o danificar já aplica o knockback
-        }
-            
-        if(pJog2){
-            if(verificaColisao(pIni, pJog2) && !pJog2->estaEmKnockback()){
-                pIni->danificar(pJog2);
-            }
-        }
+    // Encostou no chão: o gerenciador coloca a entidade em cima dele.
+    if (pEnt->getPosicao().y + pEnt->getTamanho().y >= topoChao)
+        pEnt->pousar(topoChao);
+}
+
+void GerenciadorColisoes::colisaoChao() {
+    for (Entidades::Personagens::Inimigo* pIni : LIs)
+        colisaoChao(pIni);
+    colisaoChao(pJog1);
+    colisaoChao(pJog2);
+}
+
+void GerenciadorColisoes::colisaoInimigoJog() {
+    for (Entidades::Personagens::Inimigo* pIni : LIs) {
+        colisaoInimigoJog(pIni, pJog1);
+        colisaoInimigoJog(pIni, pJog2);
     }
-    
+}
+
+void GerenciadorColisoes::colisaoInimigoJog(Entidades::Personagens::Inimigo* pIni,
+                                            Entidades::Personagens::Cacador* pJog) {
+    if (!pJog || !verificaColisao(pIni, pJog))
+        return;
+
+    if (pJog->estaArmado()) {
+        // Encostou no caçador armado: quem leva o dano é o inimigo.
+        pIni->sofrerGolpe(pJog);   // já ignora se ele acabou de levar um golpe
+    } else if (!pJog->estaEmKnockback()) {
+        pIni->danificar(pJog);     // o danificar já aplica o knockback
+    }
+}
+
+void GerenciadorColisoes::removerInimigosMortos() {
+    for (std::vector<Entidades::Personagens::Inimigo*>::iterator it = LIs.begin(); it != LIs.end();) {
+        if (!(*it)->estaAtiva())
+            it = LIs.erase(it);
+        else
+            ++it;
+    }
 }
 
 } // namespace Gerenciadores

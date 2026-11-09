@@ -11,6 +11,7 @@ public:
     ~Personagem();
     void operator++(int);      // pós-fixado:  personagem++ (soma vida)
     void operator--(int);      // pós-fixado:  personagem-- (perde vida)
+    bool estaAtiva() const override;   // ativo enquanto tiver vidas
 protected:
     int vidas;
     float velocidade;

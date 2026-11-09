@@ -28,6 +28,20 @@ void ListaEntidades::limpar() {
     LEs.limpar();
 }
 
+void ListaEntidades::removerInativas() {
+    Lista<Entidades::Entidade>::Elemento<Entidades::Entidade>* pAtual = LEs.getPrimeiro();
+    while (pAtual) {
+        // Guarda o próximo antes, porque o remover apaga o nó atual.
+        Lista<Entidades::Entidade>::Elemento<Entidades::Entidade>* pProximo = pAtual->getProx();
+        Entidades::Entidade* pE = pAtual->getInfo();
+        if (pE && !pE->estaAtiva()) {
+            LEs.remover(pE);
+            delete pE;
+        }
+        pAtual = pProximo;
+    }
+}
+
 void ListaEntidades::executar() {
     Lista<Entidades::Entidade>::Elemento<Entidades::Entidade>* pAtual = LEs.getPrimeiro();
     while (pAtual) {

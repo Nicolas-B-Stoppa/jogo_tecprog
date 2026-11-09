@@ -1,47 +1,37 @@
 #include "Jogo.hpp"
 
-#include <algorithm>
-
 Jogo::Jogo()
-    : janela(sf::VideoMode({LARGURA_JANELA, ALTURA_JANELA}), "VampireHunters++"),
-      camera(sf::FloatRect({0.f, 0.f}, {static_cast<float>(LARGURA_JANELA), static_cast<float>(ALTURA_JANELA)})),
+    : gerGrafico(),
       fase1(),
       cacador({100.f, 300.f}) {
-    janela.setFramerateLimit(60);
-    cacador.setChao(fase1.getTopoChao());
     fase1.setJogadores(&cacador);
 }
 
 Jogo::~Jogo() {}
 
 void Jogo::executar() {
-    while (janela.isOpen()) {
+    while (gerGrafico.estaAberta()) {
         processarEventos();
 
         cacador.executar();
-        fase1.executar();
+        fase1.executar();   // inimigos + colisões (inclusive com o chão)
         atualizarCamera();
 
-        janela.clear(sf::Color(25, 15, 35));   // céu noturno
-        janela.setView(camera);
-        fase1.desenhar(janela);
-        cacador.desenhar(janela);
-        janela.display();
+        gerGrafico.limpar();
+        fase1.desenhar(gerGrafico.getJanela());
+        cacador.desenhar(gerGrafico.getJanela());
+        gerGrafico.mostrar();
     }
 }
 
 void Jogo::processarEventos() {
-    while (const std::optional evento = janela.pollEvent()) {
+    while (const std::optional evento = gerGrafico.pollEvent()) {
         if (evento->is<sf::Event::Closed>())
-            janela.close();
+            gerGrafico.fechar();
     }
 }
 
 void Jogo::atualizarCamera() {
-    // Centraliza no caçador, sem mostrar além do começo e do fim da fase.
     float centroX = cacador.getPosicao().x + cacador.getTamanho().x / 2.f;
-    float metade = LARGURA_JANELA / 2.f;
-    centroX = std::clamp(centroX, metade, fase1.getLargura() - metade);
-
-    camera.setCenter({centroX, ALTURA_JANELA / 2.f});
+    gerGrafico.centralizarCamera(centroX, fase1.getLargura());
 }

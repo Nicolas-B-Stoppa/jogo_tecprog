@@ -21,6 +21,7 @@ public:
     void incluir(Entidades::Entidade* pE);
     bool remover(Entidades::Entidade* pE);   // tira da lista sem deletar
     void limpar();                           // deleta todas as entidades
+    void removerInativas();                  // deleta as que saíram do jogo (ex.: inimigo morto)
 
     void executar();                         // executa todas
     void desenhar(sf::RenderWindow& janela); // desenha todas

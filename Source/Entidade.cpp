@@ -20,11 +20,12 @@ Entidade::Entidade(sf::Vector2f posicao, sf::Vector2f tamanho)
       quadroAtual(0),
       tempoQuadro(0.f),
       escalaSprite(1.f),
+      animacaoEmLoop(true),
+      animacaoAcabou(false),
       olhandoDireita(true),
       xAnterior(posicao.x),
       velY(0.f),
       noChao(false),
-      topoChao(720.f),
       dt(0.f) {
     box.setPosition(posi);
 }
@@ -42,24 +43,38 @@ void Entidade::desenhar(sf::RenderWindow& janela) {
     }
 }
 
+bool Entidade::abrirTextura(sf::Texture& tex, const std::string& arquivo) {
+    if (!tex.loadFromFile(std::string(ASSETS_DIR) + arquivo))
+        return false;
+    tex.setSmooth(true);
+    return true;
+}
+
 void Entidade::carregarTextura(const std::string& arquivo, int quadros, float escala) {
-    sf::Image imagem;
-    if (!imagem.loadFromFile(std::string(ASSETS_DIR) + arquivo))
-        return;   // sem a imagem, a entidade continua sendo desenhada como retângulo
+    // Sem a imagem, a entidade continua sendo desenhada como retângulo.
+    if (abrirTextura(textura, arquivo))
+        usarTextura(textura, quadros, escala);
+}
 
-    sf::Vector2u tam = imagem.getSize();
+void Entidade::usarTextura(const sf::Texture& tex, int quadros, float escala,
+                           bool emLoop, float origemX) {
+    sf::Vector2u tam = tex.getSize();
+    if (tam.x == 0)
+        return;   // textura não carregou
 
-    if (!textura.loadFromImage(imagem))
-        return;
-    textura.setSmooth(true);
-
-    sprite.setTexture(textura, true);
+    sprite.setTexture(tex, true);
     numQuadros = std::max(1, quadros);
     escalaSprite = escala;
+    animacaoEmLoop = emLoop;
+    animacaoAcabou = false;
+    quadroAtual = 0;
+    tempoQuadro = 0.f;
 
-    // Origem no meio da base do quadro: o "pé" do sprite fica na base da hitbox.
+    // Origem na base do quadro: o "pé" do sprite fica na base da hitbox.
     float larguraQuadro = static_cast<float>(tam.x / numQuadros);
-    sprite.setOrigin({larguraQuadro / 2.f, static_cast<float>(tam.y)});
+    if (origemX < 0.f)
+        origemX = larguraQuadro / 2.f;
+    sprite.setOrigin({origemX, static_cast<float>(tam.y)});
     temSprite = true;
 }
 
@@ -70,13 +85,22 @@ void Entidade::animar() {
     tempoQuadro += dt;
     while (tempoQuadro >= DURACAO_QUADRO) {
         tempoQuadro -= DURACAO_QUADRO;
-        quadroAtual = (quadroAtual + 1) % numQuadros;
+
+        if (quadroAtual < numQuadros - 1) {
+            quadroAtual++;
+        } else if (animacaoEmLoop) {
+            quadroAtual = 0;
+        } else {
+            animacaoAcabou = true;   // fica parado no último quadro
+            tempoQuadro = 0.f;
+            break;
+        }
     }
 }
 
 void Entidade::atualizarSprite() {
     // Recorta o quadro atual da folha de sprites.
-    sf::Vector2u tam = textura.getSize();
+    sf::Vector2u tam = sprite.getTexture().getSize();
     int larguraQuadro = static_cast<int>(tam.x) / numQuadros;
     sprite.setTextureRect(sf::IntRect({quadroAtual * larguraQuadro, 0},
                                       {larguraQuadro, static_cast<int>(tam.y)}));
@@ -102,8 +126,14 @@ sf::Vector2f Entidade::getTamanho() const {
     return {largura, altura};
 }
 
-void Entidade::setChao(float y) {
-    topoChao = y;
+bool Entidade::estaAtiva() const {
+    return true;
+}
+
+void Entidade::pousar(float yTopo) {
+    posi.y = yTopo - altura;
+    velY = 0.f;
+    noChao = true;
 }
 
 void Entidade::atualizarDt() {
@@ -114,15 +144,7 @@ void Entidade::atualizarDt() {
 void Entidade::aplicarGravidade() {
     velY += GRAVIDADE * dt;
     posi.y += velY * dt;
-
-    // Encostou no chão: para de cair.
-    if (posi.y + altura >= topoChao) {
-        posi.y = topoChao - altura;
-        velY = 0.f;
-        noChao = true;
-    } else {
-        noChao = false;
-    }
+    noChao = false;   // o gerenciador de colisões chama pousar() se encostar em algo
 }
 
 } // namespace Entidades

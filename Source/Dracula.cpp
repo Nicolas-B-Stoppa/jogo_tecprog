@@ -8,7 +8,7 @@ namespace Entidades::Personagens {
 Dracula::Dracula(sf::Vector2f posicao)
     : Inimigo(posicao, {45.f, 90.f}, 5, 120.f, 150.f),
       pSangue(nullptr) {
-    carregarTextura("draculawalk.png", 6, 1.25f);
+    carregarTextura("dracula/andar.png", 6, 1.25f);
 }
 
 Dracula::~Dracula() {}

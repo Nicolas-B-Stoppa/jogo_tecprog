@@ -25,4 +25,8 @@ void Personagem::operator--(int) {
 
 }
 
+bool Personagem::estaAtiva() const {
+    return vidas > 0;
+}
+
 } // namespace Entidades::Personagens

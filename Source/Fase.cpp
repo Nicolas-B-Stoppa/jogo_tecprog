@@ -12,7 +12,7 @@ namespace Fases {
 
 Fase::Fase(float alturaJanela) : fundo({LARGURA, alturaJanela}), chao({LARGURA, ALTURA_CHAO}) {
     // Background: escala a imagem para a altura da janela e repete na horizontal
-    if (texturaFundo.loadFromFile(std::string(ASSETS_DIR) + "Background.png")) {
+    if (texturaFundo.loadFromFile(std::string(ASSETS_DIR) + "fundo/background.png")) {
         texturaFundo.setRepeated(true);
         texturaFundo.setSmooth(true);
         sf::Vector2u tam = texturaFundo.getSize();
@@ -26,18 +26,18 @@ Fase::Fase(float alturaJanela) : fundo({LARGURA, alturaJanela}), chao({LARGURA, 
 
     chao.setFillColor(sf::Color(60, 45, 35));   // terra escura
     chao.setPosition({0.f, alturaJanela - ALTURA_CHAO});
+
+    gerColisoes.setTopoChao(getTopoChao());
 }
 
 Fase::~Fase() {
-    for (Entidades::Personagens::Inimigo* pIni : inimigos)
-        delete pIni;
-    inimigos.clear();
+    // A listaEntidades deleta as entidades no destrutor dela.
 }
 
 void Fase::incluirInimigo(Entidades::Personagens::Inimigo* pIni) {
     if (!pIni)
         return;
-    inimigos.push_back(pIni);
+    listaEntidades.incluir(pIni);
     gerColisoes.incluirInimigo(pIni);
 }
 
@@ -46,16 +46,18 @@ void Fase::setJogadores(Entidades::Personagens::Cacador* pj1, Entidades::Persona
 }
 
 void Fase::executar() {
-    for (Entidades::Personagens::Inimigo* pIni : inimigos)
-        pIni->executar();
+    listaEntidades.executar();
 
     gerColisoes.executar();   // depois de todo mundo se mover
+
+    // Inimigos sem vida: primeiro saem do gerenciador, depois a lista deleta.
+    gerColisoes.removerInimigosMortos();
+    listaEntidades.removerInativas();
 }
 
-void Fase::desenhar(sf::RenderWindow& janela) const {
+void Fase::desenhar(sf::RenderWindow& janela) {
     janela.draw(fundo);   // o chão não é desenhado: o background já mostra o piso
-    for (Entidades::Personagens::Inimigo* pIni : inimigos)
-        pIni->desenhar(janela);
+    listaEntidades.desenhar(janela);
 }
 
 float Fase::getLargura() const {

@@ -22,6 +22,10 @@ private:
     std::set<Entidades::Sangue*> LPs;                      // projéteis
     Entidades::Personagens::Cacador* pJog1;
     Entidades::Personagens::Cacador* pJog2;
+    float topoChao;                                        // altura do chão da fase
+
+    void colisaoChao(Entidades::Entidade* pEnt);
+    void colisaoInimigoJog(Entidades::Personagens::Inimigo* pIni, Entidades::Personagens::Cacador* pJog);
 
 public:
     GerenciadorColisoes();
@@ -31,10 +35,13 @@ public:
     void incluirProjetil(Entidades::Sangue* pj);
     void setJogadores(Entidades::Personagens::Cacador* pj1,
                       Entidades::Personagens::Cacador* pj2 = nullptr);   // jogador 2 é opcional
+    void setTopoChao(float y);
+    void removerInimigosMortos();   // tira da lista (não deleta: quem deleta é a fase)
 
     bool verificaColisao(Entidades::Entidade* pEnt1, Entidades::Entidade* pEnt2) const;
     void executar();   // trata todas as colisões (chamar a cada frame)
 
+    void colisaoChao();
     void colisaoInimigoJog();
     void colisaoObstaculoJog();
     void colisaoProjetilJog();
