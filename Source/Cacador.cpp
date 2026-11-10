@@ -66,5 +66,11 @@ bool Cacador::estaEmKnockback() const {
 void Cacador::salvar() {
     // TODO: salvar posição, vidas, pontos...
 }
+void setdentrogosma(bool dentro){
+    dentrogosma = dentro;
+}
+bool getdentrogosma() {
+    return dentrogosma;
+}
 
 } // namespace Entidades::Personagens
