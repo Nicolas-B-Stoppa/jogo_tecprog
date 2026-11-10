@@ -2,6 +2,7 @@
 
 #include "Entidades/Personagens/Inimigos/Morcego.hpp"
 #include "Entidades/Personagens/Inimigos/Vampiro.hpp"
+#include "Entidades/Personagens/Inimigos/Dracula.hpp"
 
 namespace Fases {
 
@@ -16,6 +17,9 @@ FasePrimeira::~FasePrimeira() {}
 void FasePrimeira::criarInimigos() {
     criarMorcegos();
     criarVampiros();
+    // TEMPORÁRIO: Drácula aqui só para testar o tiro; o lugar dele é a Fase 2.
+    Entidades::Personagens::Dracula* pDracula = new Entidades::Personagens::Dracula({2100.f, 520.f});
+    incluirDracula(pDracula);
 }
 
 void FasePrimeira::criarObstaculos() {

@@ -13,6 +13,7 @@ Morcego::Morcego(sf::Vector2f posicao)
       vampiro(std::rand() % 100 < 30),   // 30% de chance de ser vampiro
       voo(0.f) {
     carregarTextura("morcego/voar.png", 6, 0.3f);
+    setMaxVidas(2);   // o morcego vampiro se cura até 2
 }
 
 Morcego::~Morcego() {}

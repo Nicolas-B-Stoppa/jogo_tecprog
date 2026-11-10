@@ -26,6 +26,7 @@ private:
 
     void colisaoChao(Entidades::Entidade* pEnt);
     void colisaoInimigoJog(Entidades::Personagens::Inimigo* pIni, Entidades::Personagens::Cacador* pJog);
+    void colisaoProjetilJog(Entidades::Sangue* pSangue, Entidades::Personagens::Cacador* pJog);
 
 public:
     GerenciadorColisoes();

@@ -1,5 +1,6 @@
 #include "Entidades/Personagens/Inimigos/Inimigo.hpp"
 
+#include <climits>
 #include <cmath>
 
 namespace Entidades::Personagens {
@@ -8,6 +9,7 @@ namespace Entidades::Personagens {
 Inimigo::Inimigo(sf::Vector2f posicao, sf::Vector2f tamanho, int vidas, float velocidade, float raio)
     : Personagem(posicao, tamanho, vidas, velocidade),
       maldade(1),
+      maxVidas(INT_MAX),   // sem limite até o inimigo chamar setMaxVidas
       angulo(0.f),
       raio(raio),
       origem(posicao),
@@ -23,6 +25,18 @@ void Inimigo::executar() {
     atualizarKnockback();
     aplicarGravidade();
     animar();
+}
+
+void Inimigo::setMaxVidas(int max) {
+    maxVidas = max;
+    if (vidas > maxVidas)
+        vidas = maxVidas;
+}
+
+// Substitui o ++ do Personagem: o inimigo só se cura até maxVidas.
+void Inimigo::operator++(int) {
+    if (vidas < maxVidas)
+        Personagem::operator++(0);
 }
 
 void Inimigo::salvar() {

@@ -12,7 +12,7 @@ public:
     virtual void executar() = 0;
     virtual void salvar() = 0;
 
-    void desenhar(sf::RenderWindow& janela);
+    virtual void desenhar(sf::RenderWindow& janela);
     sf::Vector2f getPosicao() const;
     sf::Vector2f getTamanho() const;
 
@@ -24,9 +24,7 @@ protected:
     float altura;
     float largura;
 
-    // Sprite (vale para todas as entidades)
-    // ATENÇÃO: textura tem que vir antes de sprite, porque o sprite é
-    // construído apontando para ela.
+    
     sf::Texture textura;
     sf::Sprite sprite;
     bool temSprite;

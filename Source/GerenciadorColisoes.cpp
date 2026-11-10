@@ -3,6 +3,8 @@
 #include "Entidades/Entidade.hpp"
 #include "Entidades/Personagens/Cacador.hpp"
 #include "Entidades/Personagens/Inimigos/Inimigo.hpp"
+#include "Entidades/Personagens/Inimigos/Dracula.hpp"
+#include "Entidades/Sangue.hpp"
 
 namespace Gerenciadores {
 
@@ -57,9 +59,9 @@ bool GerenciadorColisoes::verificaColisao(Entidades::Entidade* pEnt1, Entidades:
 void GerenciadorColisoes::executar() {
     colisaoChao();   // primeiro todo mundo para em cima do chão
     colisaoInimigoJog();
-    // TODO: descomentar quando estiverem implementados
+    colisaoProjetilJog();
+    // TODO: descomentar quando estiver implementado
     // colisaoObstaculoJog();
-    // colisaoProjetilJog();
 }
 
 void GerenciadorColisoes::colisaoChao(Entidades::Entidade* pEnt) {
@@ -76,6 +78,12 @@ void GerenciadorColisoes::colisaoChao() {
         colisaoChao(pIni);
     colisaoChao(pJog1);
     colisaoChao(pJog2);
+
+    // O sangue não pousa: encostou no chão, some.
+    for (Entidades::Sangue* pSangue : LPs) {
+        if (pSangue->estaAtiva() && pSangue->getPosicao().y + pSangue->getTamanho().y >= topoChao)
+            pSangue->desativar();
+    }
 }
 
 void GerenciadorColisoes::colisaoInimigoJog() {
@@ -98,12 +106,34 @@ void GerenciadorColisoes::colisaoInimigoJog(Entidades::Personagens::Inimigo* pIn
     }
 }
 
+void GerenciadorColisoes::colisaoProjetilJog() {
+    for (Entidades::Sangue* pSangue : LPs) {
+        colisaoProjetilJog(pSangue, pJog1);
+        colisaoProjetilJog(pSangue, pJog2);
+    }
+}
+
+void GerenciadorColisoes::colisaoProjetilJog(Entidades::Sangue* pSangue,
+                                             Entidades::Personagens::Cacador* pJog) {
+    if (!pJog || !pSangue->estaAtiva() || !verificaColisao(pSangue, pJog))
+        return;
+
+    if (!pJog->estaEmKnockback())
+        pSangue->danificar(pJog);   // tira vida, empurra e desativa o sangue
+}
+
 void GerenciadorColisoes::removerInimigosMortos() {
     for (std::vector<Entidades::Personagens::Inimigo*>::iterator it = LIs.begin(); it != LIs.end();) {
-        if (!(*it)->estaAtiva())
+        if (!(*it)->estaAtiva()) {
+            // Se for um Drácula, o sangue dele morre junto: tira da LPs antes
+            // de a fase deletar (senão a LPs fica apontando para lixo).
+            Entidades::Personagens::Dracula* pDrac = dynamic_cast<Entidades::Personagens::Dracula*>(*it);
+            if (pDrac)
+                LPs.erase(pDrac->getSangue());
             it = LIs.erase(it);
-        else
+        } else {
             ++it;
+        }
     }
 }
 
