@@ -22,6 +22,7 @@ protected:
     static constexpr float FORCA_KNOCKBACK_X = 450.f;
     static constexpr float FORCA_KNOCKBACK_Y = 350.f;   // pulinho para cima
     static constexpr float DURACAO_KNOCKBACK = 0.3f;
+    bool dentrogosma;
 
     void mover()override;
 };
