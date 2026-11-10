@@ -8,6 +8,10 @@ class Sangue : public Entidade {
 public:
     Sangue();
     ~Sangue();
+    void executar();
+    void salvar();
+protected:
+    bool ativo;
 };
 
 } // namespace Entidades
