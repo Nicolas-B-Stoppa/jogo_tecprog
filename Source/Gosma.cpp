@@ -15,7 +15,7 @@ void Gosma::salvar() {
 }
 
 void Gosma::obstacularizar(*Cacador pJog) {
-    pJog->dentroGosma = true; // Indica que o jogador está dentro da gosma;
+    pJog->setdentroGosma(true); // Indica que o jogador está dentro da gosma;
 }
 
 } // namespace Entidades::Obstaculos
