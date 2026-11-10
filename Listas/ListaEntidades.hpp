@@ -24,7 +24,7 @@ public:
     void removerInativas();                  // deleta as que saíram do jogo (ex.: inimigo morto)
 
     void executar();                         // executa todas
-    void desenhar(sf::RenderWindow& janela); // desenha todas
+    void desenhar();                         // desenha todas
 
     Entidades::Entidade* operator[](int pos) const;
     int getTamanho() const;

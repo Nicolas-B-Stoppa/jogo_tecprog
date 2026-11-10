@@ -12,6 +12,12 @@ GerenciadorGrafico::GerenciadorGrafico()
 
 GerenciadorGrafico::~GerenciadorGrafico() {}
 
+GerenciadorGrafico* GerenciadorGrafico::getInstancia() {
+    // Criado na primeira chamada e destruído sozinho no fim do programa.
+    static GerenciadorGrafico instancia;
+    return &instancia;
+}
+
 bool GerenciadorGrafico::estaAberta() const {
     return janela.isOpen();
 }
@@ -29,12 +35,12 @@ void GerenciadorGrafico::limpar() {
     janela.setView(camera);
 }
 
-void GerenciadorGrafico::mostrar() {
-    janela.display();
+void GerenciadorGrafico::desenhar(const sf::Drawable& desenho) {
+    janela.draw(desenho);
 }
 
-sf::RenderWindow& GerenciadorGrafico::getJanela() {
-    return janela;
+void GerenciadorGrafico::mostrar() {
+    janela.display();
 }
 
 float GerenciadorGrafico::getAltura() const {

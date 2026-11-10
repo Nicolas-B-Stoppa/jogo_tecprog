@@ -2,6 +2,7 @@
 
 #include "Entidades/Personagens/Inimigos/Inimigo.hpp"
 #include "Entidades/Personagens/Inimigos/Dracula.hpp"
+#include "Gerenciadores/GerenciadorGrafico.hpp"
 
 #include <string>
 
@@ -87,14 +88,14 @@ void Fase::executar() {
     listaEntidades.removerInativas();
 }
 
-void Fase::desenhar(sf::RenderWindow& janela) {
-    janela.draw(fundo);   // o chão não é desenhado: o background já mostra o piso
-    listaEntidades.desenhar(janela);
+void Fase::desenhar() {
+    pGG->desenhar(fundo);   // o chão não é desenhado: o background já mostra o piso
+    listaEntidades.desenhar();
 
     for (Entidades::Personagens::Dracula* pDrac : LDs) {
         Entidades::Sangue* pSangue = pDrac->getSangue();
         if (pSangue && pSangue->estaAtiva())
-            pSangue->desenhar(janela);
+            pSangue->desenhar();
     }
 }
 

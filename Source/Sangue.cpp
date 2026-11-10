@@ -2,6 +2,7 @@
 
 #include "Entidades/Personagens/Cacador.hpp"
 #include "Entidades/Personagens/Inimigos/Dracula.hpp"
+#include "Gerenciadores/GerenciadorGrafico.hpp"
 
 namespace Entidades {
 
@@ -61,13 +62,13 @@ void Sangue::executar() {
         desativar();
 }
 
-void Sangue::desenhar(sf::RenderWindow& janela) {
+void Sangue::desenhar() {
     if (!ativo)
         return;
 
     box.setPosition(posi);
     if (!temSprite) {
-        janela.draw(box);
+        pGG->desenhar(box);
         return;
     }
 
@@ -80,7 +81,7 @@ void Sangue::desenhar(sf::RenderWindow& janela) {
     sf::Vector2f escala = sprite.getScale();
     sprite.setScale({-escala.x, escala.y});
 
-    janela.draw(sprite);
+    pGG->desenhar(sprite);
 }
 
 void Sangue::danificar(Personagens::Cacador* pcaca) {

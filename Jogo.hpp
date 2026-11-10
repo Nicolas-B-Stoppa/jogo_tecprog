@@ -6,7 +6,7 @@
 
 class Jogo {
 private:
-    Gerenciadores::GerenciadorGrafico gerGrafico;   // antes da fase: a janela é criada primeiro
+    Gerenciadores::GerenciadorGrafico* pGG;   // singleton; antes da fase: a janela é criada primeiro
     Fases::FasePrimeira fase1;
     Entidades::Personagens::Cacador cacador;
 

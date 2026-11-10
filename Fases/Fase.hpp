@@ -5,10 +5,10 @@
 
 #include "Ente.hpp"
 #include "Listas/ListaEntidades.hpp"
-#include "Gerenciadores/GerenciadorColisoes.hpp"   // atributo por valor: precisa da classe completa
+#include "Gerenciadores/GerenciadorColisoes.hpp"   
 
 namespace Entidades::Personagens {
-class Inimigo;   // declarações antecipadas: bastam para guardar ponteiros
+class Inimigo;   
 class Dracula;
 class Cacador;
 }
@@ -18,13 +18,12 @@ namespace Fases {
 class Fase : public Ente {
 protected:
     sf::Texture texturaFundo;
-    sf::RectangleShape fundo;   // background repetido ao longo da fase
-    float topoChao;             // altura onde os personagens pisam
-    Listas::ListaEntidades listaEntidades;   // dona das entidades da fase (deleta no fim)
+    sf::RectangleShape fundo;  
+    float topoChao;             
+    Listas::ListaEntidades listaEntidades;   
     Gerenciadores::GerenciadorColisoes gerColisoes;
 
-    // Os Dráculas também estão na listaEntidades; aqui é só para mandar atirar
-    // e desenhar o sangue (o sangue não vai para a lista: quem deleta é o Drácula).
+    
     std::vector<Entidades::Personagens::Dracula*> LDs;
     Entidades::Personagens::Cacador* pJog1;
     Entidades::Personagens::Cacador* pJog2;
@@ -48,7 +47,7 @@ public:
     void setJogadores(Entidades::Personagens::Cacador* pj1,
                       Entidades::Personagens::Cacador* pj2 = nullptr);
     void executar();
-    void desenhar(sf::RenderWindow& janela);
+    void desenhar();
 
     float getLargura() const;
     float getTopoChao() const;   

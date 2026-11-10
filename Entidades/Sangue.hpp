@@ -14,7 +14,7 @@ public:
 
     void executar() override;
     void salvar() override;
-    void desenhar(sf::RenderWindow& janela) override;
+    void desenhar() override;
 
     
     // Ele plana (sem gravidade) por TEMPO_PLANANDO e depois começa a cair.

@@ -12,7 +12,7 @@ public:
     virtual void executar() = 0;
     virtual void salvar() = 0;
 
-    virtual void desenhar(sf::RenderWindow& janela);
+    virtual void desenhar();   // desenha pelo gerenciador gráfico (pGG)
     sf::Vector2f getPosicao() const;
     sf::Vector2f getTamanho() const;
 

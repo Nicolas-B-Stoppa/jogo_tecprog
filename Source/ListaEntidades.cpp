@@ -50,10 +50,10 @@ void ListaEntidades::executar() {
     }
 }
 
-void ListaEntidades::desenhar(sf::RenderWindow& janela) {
+void ListaEntidades::desenhar() {
     Lista<Entidades::Entidade>::Elemento<Entidades::Entidade>* pAtual = LEs.getPrimeiro();
     while (pAtual) {
-        pAtual->getInfo()->desenhar(janela);
+        pAtual->getInfo()->desenhar();
         pAtual = pAtual->getProx();
     }
 }

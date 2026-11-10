@@ -1,5 +1,7 @@
 #include "Entidades/Entidade.hpp"
 
+#include "Gerenciadores/GerenciadorGrafico.hpp"
+
 #include <algorithm>
 
 #ifndef ASSETS_DIR
@@ -32,14 +34,14 @@ Entidade::Entidade(sf::Vector2f posicao, sf::Vector2f tamanho)
 
 Entidade::~Entidade() {}
 
-void Entidade::desenhar(sf::RenderWindow& janela) {
+void Entidade::desenhar() {
     box.setPosition(posi);   // a box sempre acompanha a posição atual
 
     if (temSprite) {
         atualizarSprite();
-        janela.draw(sprite);
+        pGG->desenhar(sprite);
     } else {
-        janela.draw(box);    // sem sprite ainda: desenha o retângulo
+        pGG->desenhar(box);  // sem sprite ainda: desenha o retângulo
     }
 }
 

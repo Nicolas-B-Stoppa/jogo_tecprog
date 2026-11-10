@@ -1,37 +1,39 @@
 #include "Jogo.hpp"
 
 Jogo::Jogo()
-    : gerGrafico(),
+    : pGG(Gerenciadores::GerenciadorGrafico::getInstancia()),
       fase1(),
       cacador({100.f, 300.f}) {
     fase1.setJogadores(&cacador);
 }
 
-Jogo::~Jogo() {}
+Jogo::~Jogo() {
+    pGG = nullptr;   // não deleta: o singleton se destrói sozinho
+}
 
 void Jogo::executar() {
-    while (gerGrafico.estaAberta()) {
+    while (pGG->estaAberta()) {
         processarEventos();
 
         cacador.executar();
         fase1.executar();   // inimigos + colisões (inclusive com o chão)
         atualizarCamera();
 
-        gerGrafico.limpar();
-        fase1.desenhar(gerGrafico.getJanela());
-        cacador.desenhar(gerGrafico.getJanela());
-        gerGrafico.mostrar();
+        pGG->limpar();
+        fase1.desenhar();
+        cacador.desenhar();
+        pGG->mostrar();
     }
 }
 
 void Jogo::processarEventos() {
-    while (const std::optional evento = gerGrafico.pollEvent()) {
+    while (const std::optional evento = pGG->pollEvent()) {
         if (evento->is<sf::Event::Closed>())
-            gerGrafico.fechar();
+            pGG->fechar();
     }
 }
 
 void Jogo::atualizarCamera() {
     float centroX = cacador.getPosicao().x + cacador.getTamanho().x / 2.f;
-    gerGrafico.centralizarCamera(centroX, fase1.getLargura());
+    pGG->centralizarCamera(centroX, fase1.getLargura());
 }
