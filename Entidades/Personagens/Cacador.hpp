@@ -14,6 +14,8 @@ public:
 
     void sofrerKnockback(const Entidade* pCausador);   // empurra para longe de quem causou o dano
     bool estaEmKnockback() const;
+    void setdentrogosma(bool dentro);
+    bool getdentrogosma;
 protected:
     float velKnockback;        // velocidade horizontal do empurrão
     float tempoKnockback;      // quanto tempo ainda falta de empurrão (s)
