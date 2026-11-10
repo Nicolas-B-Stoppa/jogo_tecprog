@@ -7,9 +7,7 @@ Cacador::Cacador(sf::Vector2f posicao)
     : Personagem(posicao, {40.f, 70.f}, 3, 300.f),
       animAtual(Animacao::Parado),
       armado(false),
-      andando(false),
-      velKnockback(0.f),
-      tempoKnockback(0.f) {
+      andando(false) {
     box.setFillColor(sf::Color(70, 130, 180));   // aparece se as imagens não carregarem
 
     abrirTextura(texParado, "cacador/parado.png");
@@ -39,10 +37,9 @@ void Cacador::mover() {
     using Tecla = sf::Keyboard::Key;
     andando = false;
 
-    // Durante o knockback o jogador perde o controle e só é empurrado.
-    if (estaEmKnockback()) {
-        tempoKnockback -= dt;
-        posi.x += velKnockback * dt;
+    // Durante o empurrão o jogador perde o controle e só é empurrado.
+    atualizarKnockback();
+    if (estaSendoEmpurrado()) {
         if (posi.x < 0.f)
             posi.x = 0.f;
         return;
@@ -102,22 +99,8 @@ void Cacador::trocarAnimacao(Animacao nova) {
 }
 
 void Cacador::sofrerKnockback(const Entidade* pCausador) {
-    if (!pCausador)
-        return;
-
-    // Compara os centros: se o causador está à direita, empurra para a esquerda.
-    float meuCentro = posi.x + largura / 2.f;
-    float centroCausador = pCausador->getPosicao().x + pCausador->getTamanho().x / 2.f;
-    float direcao = (meuCentro < centroCausador) ? -1.f : 1.f;
-
-    velKnockback = direcao * FORCA_KNOCKBACK_X;
-    velY = -FORCA_KNOCKBACK_Y;
-    tempoKnockback = DURACAO_KNOCKBACK;
+    Personagem::sofrerKnockback(pCausador);
     armado = false;   // levar dano interrompe o golpe
-}
-
-bool Cacador::estaEmKnockback() const {
-    return tempoKnockback > 0.f;
 }
 
 bool Cacador::estaArmado() const {

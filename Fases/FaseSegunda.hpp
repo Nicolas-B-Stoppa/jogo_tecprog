@@ -8,6 +8,11 @@ class FaseSegunda : public Fase {
 public:
     FaseSegunda();
     ~FaseSegunda();
+protected:
+    void criarInimigos() override;
+    void criarObstaculos() override;
+
+    void criarDraculas();
 };
 
 } // namespace Fases

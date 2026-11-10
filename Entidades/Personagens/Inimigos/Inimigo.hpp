@@ -19,8 +19,7 @@ public:
     void operator++(int);   // inimigo++ : cura uma vida, sem passar de maxVidas
 
     
-    void sofrerGolpe(const Entidade* pCausador);
-    bool podeSofrerGolpe() const;   
+    void sofrerGolpe(const Entidade* pCausador);   // espada: perde 1 vida (se não estiver invencível) e é empurrado
 protected:
     int maldade;
     int maxVidas;              // o ++ não passa disso (padrão: sem limite)
@@ -28,17 +27,6 @@ protected:
     float angulo;              // avança com o tempo e gera o movimento periódico
     float raio;                // o quanto o inimigo se afasta da origem
     sf::Vector2f origem;       // spawnpoit
-
-    float velKnockback;        // velocidade horizontal do empurrão
-    float tempoKnockback;      // quanto tempo ainda falta de empurrão (s)
-    float tempoInvulneravel;   // enquanto > 0, não leva outro golpe
-
-    static constexpr float FORCA_KNOCKBACK_X = 400.f;
-    static constexpr float FORCA_KNOCKBACK_Y = 300.f;   
-    static constexpr float DURACAO_KNOCKBACK = 0.3f;
-    static constexpr float DURACAO_INVULNERAVEL = 0.5f; // maior que o golpe (0,4 s): um golpe = um dano
-
-    void atualizarKnockback();
 
     void avancarAngulo();
     void mover() override;     

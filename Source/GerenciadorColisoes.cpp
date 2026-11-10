@@ -101,7 +101,7 @@ void GerenciadorColisoes::colisaoInimigoJog(Entidades::Personagens::Inimigo* pIn
     if (pJog->estaArmado()) {
         // Encostou no caçador armado: quem leva o dano é o inimigo.
         pIni->sofrerGolpe(pJog);   // já ignora se ele acabou de levar um golpe
-    } else if (!pJog->estaEmKnockback()) {
+    } else if (!pJog->estaInvencivel()) {
         pIni->danificar(pJog);     // o danificar já aplica o knockback
     }
 }
@@ -118,7 +118,7 @@ void GerenciadorColisoes::colisaoProjetilJog(Entidades::Sangue* pSangue,
     if (!pJog || !pSangue->estaAtiva() || !verificaColisao(pSangue, pJog))
         return;
 
-    if (!pJog->estaEmKnockback())
+    if (!pJog->estaInvencivel())
         pSangue->danificar(pJog);   // tira vida, empurra e desativa o sangue
 }
 

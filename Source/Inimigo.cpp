@@ -12,17 +12,15 @@ Inimigo::Inimigo(sf::Vector2f posicao, sf::Vector2f tamanho, int vidas, float ve
       maxVidas(INT_MAX),   // sem limite até o inimigo chamar setMaxVidas
       angulo(0.f),
       raio(raio),
-      origem(posicao),
-      velKnockback(0.f),
-      tempoKnockback(0.f),
-      tempoInvulneravel(0.f) {}
+      origem(posicao) {}
 
 Inimigo::~Inimigo() {}
 
 void Inimigo::executar() {
     atualizarDt();
     mover();
-    atualizarKnockback();
+    // Empurra a origem junto: assim o vai-e-vem continua, só que mais para lá.
+    origem.x += atualizarKnockback();
     aplicarGravidade();
     animar();
 }
@@ -44,37 +42,11 @@ void Inimigo::salvar() {
 }
 
 void Inimigo::sofrerGolpe(const Entidade* pCausador) {
-    if (!pCausador || !podeSofrerGolpe())
-        return;
+    if (!pCausador || estaInvencivel())
+        return;   // a invencibilidade (1 s) é maior que o golpe (0,4 s): um golpe = um dano
 
     (*this)--;
-
-    // Compara os centros: se o caçador está à direita, empurra para a esquerda.
-    float meuCentro = posi.x + largura / 2.f;
-    float centroCausador = pCausador->getPosicao().x + pCausador->getTamanho().x / 2.f;
-    float direcao = (meuCentro < centroCausador) ? -1.f : 1.f;
-
-    velKnockback = direcao * FORCA_KNOCKBACK_X;
-    velY = -FORCA_KNOCKBACK_Y;
-    tempoKnockback = DURACAO_KNOCKBACK;
-    tempoInvulneravel = DURACAO_INVULNERAVEL;
-}
-
-bool Inimigo::podeSofrerGolpe() const {
-    return tempoInvulneravel <= 0.f;
-}
-
-void Inimigo::atualizarKnockback() {
-    if (tempoInvulneravel > 0.f)
-        tempoInvulneravel -= dt;
-
-    if (tempoKnockback > 0.f) {
-        tempoKnockback -= dt;
-        // Empurra a origem: assim o vai-e-vem continua, só que mais para lá.
-        float deslocamento = velKnockback * dt;
-        origem.x += deslocamento;
-        posi.x += deslocamento;
-    }
+    sofrerKnockback(pCausador);
 }
 
 void Inimigo::avancarAngulo() {
