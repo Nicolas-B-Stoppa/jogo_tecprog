@@ -16,6 +16,8 @@ public:
 
     void atacar(Inimigo* pIni);   // golpe de espada: o inimigo perde 1 vida e é empurrado
     bool estaArmado() const;                          // atacando com a espada
+    void setdentrogosma(bool dentro);
+    bool getdentrogosma() const;
 protected:
     enum class Animacao { Parado, Andando, Pulando, Atacando };
 
@@ -33,6 +35,7 @@ protected:
     static constexpr float FORCA_PULO = 650.f;
     static constexpr float DURACAO_ATAQUE = 2.f;
     static constexpr float COOLDOWN_ATAQUE = 1.f;   // contado a partir do fim do ataque
+    bool dentrogosma;
 
     void atualizarAtaque();
 

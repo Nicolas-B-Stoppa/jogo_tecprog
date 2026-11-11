@@ -4,7 +4,7 @@
 
 namespace Fases {
 
-FaseSegunda::FaseSegunda() {
+FaseSegunda::FaseSegunda() : maxChefoes(1) {
     criarInimigos();
     criarObstaculos();
 }

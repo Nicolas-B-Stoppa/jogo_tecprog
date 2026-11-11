@@ -13,6 +13,9 @@ protected:
     void criarObstaculos() override;
 
     void criarDraculas();
+    void criarPlataforma();
+private:
+    const int maxChefoes;
 };
 
 } // namespace Fases

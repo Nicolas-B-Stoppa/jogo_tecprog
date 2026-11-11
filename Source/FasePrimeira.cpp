@@ -5,7 +5,7 @@
 
 namespace Fases {
 
-FasePrimeira::FasePrimeira() {
+FasePrimeira::FasePrimeira() : maxINIMMedios(3) {
     
     criarInimigos();
     criarObstaculos();

@@ -6,4 +6,5 @@ class Menu : public Ente {
 public:
     Menu();
     ~Menu();
+    void executar();
 };

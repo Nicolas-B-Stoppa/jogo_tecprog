@@ -5,6 +5,7 @@
 #include "Entidades/Personagens/Inimigos/Inimigo.hpp"
 #include "Entidades/Personagens/Inimigos/Dracula.hpp"
 #include "Entidades/Sangue.hpp"
+#include "Entidades/Obstaculos/Obstaculo.hpp"
 
 namespace Gerenciadores {
 
@@ -134,6 +135,19 @@ void GerenciadorColisoes::removerInimigosMortos() {
             it = LIs.erase(it);
         } else {
             ++it;
+        }
+    }
+}
+void GerenciadorColisoes::colisaoObstaculoJog() {
+    for(Entidades::Obstaculos::Obstaculo* pObs : LOs) {
+        if(verificaColisao(pObs, pJog1)){
+            pObs->obstacularizar(pJog1);
+        }
+            
+        if(pJog2){
+            if(verificaColisao(pObs, pJog2)){
+                pObs->obstacularizar(pJog2);
+            }
         }
     }
 }

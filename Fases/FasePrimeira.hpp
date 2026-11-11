@@ -14,6 +14,8 @@ protected:
 
     void criarMorcegos();
     void criarVampiros();
+private:
+    const int maxINIMMedios;
 };
 
 } // namespace Fases

@@ -8,6 +8,12 @@ class Estaca : public Obstaculo {
 public:
     Estaca();
     ~Estaca();
+    void executar() override;
+    void salvar() override;
+    void obstacularizar(Personagens::Cacador* pJog) override;
+protected:
+    bool danoso;
+    
 };
 
 } // namespace Entidades::Obstaculos

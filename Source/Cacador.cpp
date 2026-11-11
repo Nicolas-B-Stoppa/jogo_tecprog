@@ -10,7 +10,8 @@ Cacador::Cacador(sf::Vector2f posicao)
       animAtual(Animacao::Parado),
       tempoAtaque(0.f),
       tempoRecargaAtaque(0.f),
-      andando(false) {
+      andando(false),
+      dentrogosma(false) {
     box.setFillColor(sf::Color(70, 130, 180));   // aparece se as imagens não carregarem
 
     abrirTextura(texParado, "cacador/parado.png");
@@ -121,6 +122,13 @@ bool Cacador::estaArmado() const {
 
 void Cacador::salvar() {
     // TODO: salvar posição, vidas, pontos...
+}
+void Cacador::setdentrogosma(bool dentro) {
+    dentrogosma = dentro;
+}
+
+bool Cacador::getdentrogosma() const {
+    return dentrogosma;
 }
 
 } // namespace Entidades::Personagens
