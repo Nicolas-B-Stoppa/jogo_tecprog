@@ -6,7 +6,8 @@ namespace Entidades::Personagens {
 Cacador::Cacador(sf::Vector2f posicao)
     : Personagem(posicao, {40.f, 70.f}, 3, 300.f),
       animAtual(Animacao::Parado),
-      armado(false),
+      tempoAtaque(0.f),
+      tempoRecargaAtaque(0.f),
       andando(false) {
     box.setFillColor(sf::Color(70, 130, 180));   // aparece se as imagens não carregarem
 
@@ -21,15 +22,21 @@ Cacador::~Cacador() {}
 
 void Cacador::executar() {
     atualizarDt();
+    atualizarAtaque();    // fora do mover: continua contando durante o empurrão
     mover();
     escolherAnimacao();   // antes da gravidade: noChao ainda é o do último frame
     aplicarGravidade();
     animar();
+}
 
-    // O golpe dura o tempo da animação de ataque.
-    if (armado && animacaoAcabou) {
-        armado = false;
-        escolherAnimacao();   // já sai do ataque, assim um novo golpe começa do quadro 0
+void Cacador::atualizarAtaque() {
+    if (tempoRecargaAtaque > 0.f)
+        tempoRecargaAtaque -= dt;
+
+    if (tempoAtaque > 0.f) {
+        tempoAtaque -= dt;
+        if (tempoAtaque <= 0.f)
+            tempoRecargaAtaque = COOLDOWN_ATAQUE;   // acabou o ataque: começa a recarga
     }
 }
 
@@ -58,16 +65,16 @@ void Cacador::mover() {
     if (sf::Keyboard::isKeyPressed(Tecla::W) && noChao)
         velY = -FORCA_PULO;
 
-    // Espaço: golpe de espada (enquanto a animação toca, fica armado).
-    if (sf::Keyboard::isKeyPressed(Tecla::Space) && !armado)
-        armado = true;
+    // Espaço: ataque de espada por DURACAO_ATAQUE, se não estiver recarregando.
+    if (sf::Keyboard::isKeyPressed(Tecla::Space) && !estaArmado() && tempoRecargaAtaque <= 0.f)
+        tempoAtaque = DURACAO_ATAQUE;
 
     if (posi.x < 0.f)
         posi.x = 0.f;   // não sai pela esquerda da fase
 }
 
 void Cacador::escolherAnimacao() {
-    if (armado)
+    if (estaArmado())
         trocarAnimacao(Animacao::Atacando);
     else if (!noChao)
         trocarAnimacao(Animacao::Pulando);
@@ -93,18 +100,13 @@ void Cacador::trocarAnimacao(Animacao nova) {
         usarTextura(texPular, 6, ESCALA_SPRITE, false, ORIGEM_X_SPRITE);
         break;
     case Animacao::Atacando:
-        usarTextura(texAtaque, 4, ESCALA_SPRITE, false, ORIGEM_X_SPRITE);
+        usarTextura(texAtaque, 4, ESCALA_SPRITE, true, ORIGEM_X_SPRITE);   // repete durante o ataque
         break;
     }
 }
 
-void Cacador::sofrerKnockback(const Entidade* pCausador) {
-    Personagem::sofrerKnockback(pCausador);
-    armado = false;   // levar dano interrompe o golpe
-}
-
 bool Cacador::estaArmado() const {
-    return armado;
+    return tempoAtaque > 0.f;
 }
 
 void Cacador::salvar() {

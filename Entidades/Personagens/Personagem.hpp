@@ -14,7 +14,7 @@ public:
     bool estaAtiva() const override;   // ativo enquanto tiver vidas
 
     // Levou dano: empurra para longe de quem causou e fica invencível por um tempo.
-    virtual void sofrerKnockback(const Entidade* pCausador);
+    void sofrerKnockback(const Entidade* pCausador);
     bool estaInvencivel() const;
 protected:
     int vidas;

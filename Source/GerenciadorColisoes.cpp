@@ -113,8 +113,7 @@ void GerenciadorColisoes::colisaoProjetilJog() {
     }
 }
 
-void GerenciadorColisoes::colisaoProjetilJog(Entidades::Sangue* pSangue,
-                                             Entidades::Personagens::Cacador* pJog) {
+void GerenciadorColisoes::colisaoProjetilJog(Entidades::Sangue* pSangue, Entidades::Personagens::Cacador* pJog) {
     if (!pJog || !pSangue->estaAtiva() || !verificaColisao(pSangue, pJog))
         return;
 
