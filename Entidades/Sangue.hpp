@@ -28,12 +28,10 @@ protected:
     Personagens::Dracula* pDracula;
     float velX;                // velocidade horizontal (px/s); negativa = esquerda
     float planando;            // tempo (s) que ainda falta ignorando a gravidade
-    sf::Vector2f inicio;       // de onde foi lançado (para medir o alcance)
     bool ativo;                // false: guardado, nem anda nem é desenhado
 
     static constexpr float VELOCIDADE = 400.f;
     static constexpr float TEMPO_PLANANDO = 0.5f;
-    static constexpr float ALCANCE = 600.f;   // segurança: some se for longe demais
 
     
     static constexpr float ESCALA_SPRITE = 1.5f;

@@ -41,14 +41,6 @@ void Inimigo::salvar() {
     // TODO: salvar posição, vidas, angulo...
 }
 
-void Inimigo::sofrerGolpe(const Entidade* pCausador) {
-    if (!pCausador || estaInvencivel())
-        return;   // a invencibilidade (1 s) é maior que o golpe (0,4 s): um golpe = um dano
-
-    (*this)--;
-    sofrerKnockback(pCausador);
-}
-
 void Inimigo::avancarAngulo() {
     // velocidade / raio = velocidade angular (rad/s), assim a velocidade
     // máxima do inimigo é a própria "velocidade" do Personagem.

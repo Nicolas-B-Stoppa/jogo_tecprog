@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Entidades/Personagens/Inimigos/Inimigo.hpp"
-#include "Entidades/Personagens/Cacador.hpp"
 
 namespace Entidades::Personagens {
 

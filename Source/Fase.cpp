@@ -12,11 +12,14 @@
 
 namespace Fases {
 
-Fase::Fase(float alturaJanela)
-    : fundo({LARGURA, alturaJanela}),
-      topoChao(alturaJanela - ALTURA_CHAO),
+// O pGG já está pronto aqui: o construtor do Ente roda antes.
+Fase::Fase()
+    : fundo({LARGURA, pGG->getAltura()}),
+      topoChao(pGG->getAltura() - ALTURA_CHAO),
       pJog1(nullptr),
       pJog2(nullptr) {
+    float alturaJanela = pGG->getAltura();
+
     // Background: escala a imagem para a altura da janela e repete na horizontal
     if (texturaFundo.loadFromFile(std::string(ASSETS_DIR) + "fundo/background.png")) {
         texturaFundo.setRepeated(true);

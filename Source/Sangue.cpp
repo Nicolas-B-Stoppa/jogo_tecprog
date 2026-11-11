@@ -12,7 +12,6 @@ Sangue::Sangue(sf::Vector2f posicao, Personagens::Dracula* pDono)
       pDracula(pDono),
       velX(0.f),
       planando(0.f),
-      inicio(posicao),
       ativo(false) {
     box.setFillColor(sf::Color(150, 0, 0));
     if (abrirTextura(textura, "dracula/sangue.png"))
@@ -26,7 +25,6 @@ Sangue::~Sangue() {
 void Sangue::lancar(sf::Vector2f origem, sf::Vector2f alvo) {
     // Centraliza a hitbox do sangue no ponto de origem.
     posi = {origem.x - largura / 2.f, origem.y - altura / 2.f};
-    inicio = posi;
 
     // Só importa o lado do alvo: o tiro sai reto, paralelo ao chão.
     float direcao = (alvo.x >= origem.x) ? 1.f : -1.f;
@@ -56,10 +54,6 @@ void Sangue::executar() {
         aplicarGravidade();    // acabou: cai (o colisor desativa ao tocar o chão)
 
     animar();
-
-    sf::Vector2f percorrido = posi - inicio;
-    if (percorrido.x * percorrido.x + percorrido.y * percorrido.y > ALCANCE * ALCANCE)
-        desativar();
 }
 
 void Sangue::desenhar() {

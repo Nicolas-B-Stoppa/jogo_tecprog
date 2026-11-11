@@ -99,8 +99,10 @@ void GerenciadorColisoes::colisaoInimigoJog(Entidades::Personagens::Inimigo* pIn
         return;
 
     if (pJog->estaArmado()) {
-        // Encostou no caçador armado: quem leva o dano é o inimigo.
-        pIni->sofrerGolpe(pJog);   // já ignora se ele acabou de levar um golpe
+        // Encostou no caçador armado: quem leva o dano é o inimigo
+        // (se não acabou de levar outro golpe).
+        if (!pIni->estaInvencivel())
+            pJog->atacar(pIni);
     } else if (!pJog->estaInvencivel()) {
         pIni->danificar(pJog);     // o danificar já aplica o knockback
     }

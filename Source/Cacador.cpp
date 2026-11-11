@@ -1,5 +1,7 @@
 #include "Entidades/Personagens/Cacador.hpp"
 
+#include "Entidades/Personagens/Inimigos/Inimigo.hpp"
+
 namespace Entidades::Personagens {
 
 // Personagem(posicao, tamanho, vidas, velocidade)
@@ -103,6 +105,14 @@ void Cacador::trocarAnimacao(Animacao nova) {
         usarTextura(texAtaque, 4, ESCALA_SPRITE, true, ORIGEM_X_SPRITE);   // repete durante o ataque
         break;
     }
+}
+
+void Cacador::atacar(Inimigo* pIni) {
+    if (!pIni)
+        return;
+
+    (*pIni)--;
+    pIni->sofrerKnockback(this);   // this = o caçador que deu o golpe
 }
 
 bool Cacador::estaArmado() const {

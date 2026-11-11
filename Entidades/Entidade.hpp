@@ -33,7 +33,6 @@ protected:
     float tempoQuadro;         // tempo acumulado no quadro atual
     float escalaSprite;
     bool animacaoEmLoop;       // false: toca uma vez e para no último quadro
-    bool animacaoAcabou;       // só fica true em animação sem loop
     bool olhandoDireita;
     float xAnterior;           // para descobrir para que lado está andando
 

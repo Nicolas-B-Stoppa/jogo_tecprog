@@ -11,7 +11,6 @@ public:
     Dracula(sf::Vector2f posicao = {0.f, 0.f});
     ~Dracula();
     void executar() override;   // executa o Drácula e o sangue dele
-    void mover();
     void atirar(Cacador* pcaca);
     void danificar(Cacador* pcaca)override;
     Sangue* getSangue() const;

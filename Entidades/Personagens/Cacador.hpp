@@ -4,6 +4,8 @@
 
 namespace Entidades::Personagens {
 
+class Inimigo;   // declaração antecipada: basta para usar Inimigo*
+
 class Cacador : public Personagem {
 public:
     Cacador(sf::Vector2f posicao = {100.f, 300.f});
@@ -12,6 +14,7 @@ public:
     void executar() override;
     void salvar() override;
 
+    void atacar(Inimigo* pIni);   // golpe de espada: o inimigo perde 1 vida e é empurrado
     bool estaArmado() const;                          // atacando com a espada
 protected:
     enum class Animacao { Parado, Andando, Pulando, Atacando };

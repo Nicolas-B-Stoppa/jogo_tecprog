@@ -41,7 +41,7 @@ protected:
     void removerDraculasMortos();   // tira da LDs antes da lista deletar
 
 public:
-    Fase(float alturaJanela = 720.f);
+    Fase();
     virtual ~Fase();
 
     void setJogadores(Entidades::Personagens::Cacador* pj1,

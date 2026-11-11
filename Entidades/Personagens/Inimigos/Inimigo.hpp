@@ -19,7 +19,6 @@ public:
     void operator++(int);   // inimigo++ : cura uma vida, sem passar de maxVidas
 
     
-    void sofrerGolpe(const Entidade* pCausador);   // espada: perde 1 vida (se não estiver invencível) e é empurrado
 protected:
     int maldade;
     int maxVidas;              // o ++ não passa disso (padrão: sem limite)

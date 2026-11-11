@@ -2,6 +2,8 @@
 
 #include <cstdlib>
 
+#include "Entidades/Personagens/Cacador.hpp"
+
 namespace Entidades::Personagens {
 
 // Inimigo(posicao, tamanho, vidas, velocidade, raio)

@@ -23,7 +23,6 @@ Entidade::Entidade(sf::Vector2f posicao, sf::Vector2f tamanho)
       tempoQuadro(0.f),
       escalaSprite(1.f),
       animacaoEmLoop(true),
-      animacaoAcabou(false),
       olhandoDireita(true),
       xAnterior(posicao.x),
       velY(0.f),
@@ -68,7 +67,6 @@ void Entidade::usarTextura(const sf::Texture& tex, int quadros, float escala,
     numQuadros = std::max(1, quadros);
     escalaSprite = escala;
     animacaoEmLoop = emLoop;
-    animacaoAcabou = false;
     quadroAtual = 0;
     tempoQuadro = 0.f;
 
@@ -93,8 +91,7 @@ void Entidade::animar() {
         } else if (animacaoEmLoop) {
             quadroAtual = 0;
         } else {
-            animacaoAcabou = true;   // fica parado no último quadro
-            tempoQuadro = 0.f;
+            tempoQuadro = 0.f;   // sem loop: fica parado no último quadro
             break;
         }
     }

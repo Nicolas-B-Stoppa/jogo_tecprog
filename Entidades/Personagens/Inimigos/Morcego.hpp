@@ -11,10 +11,9 @@ public:
     void danificar(Cacador* pcaca)override;
 protected:
     bool vampiro;
-    float voo;//vai ser usada pra combater a gravidade
+    float voo;   // força para cima: anula a gravidade e faz o morcego subir e descer
 
-    static constexpr float OSCILACAO_VOO = 160.f;   // o quanto o voo varia em torno da gravidade
-    static constexpr float SUBIDAS_VOO = 5.f;       
+    static constexpr float ALTURA_VOO = 30.f;   // quanto ele sobe e desce (px)
 
     void mover()override;
 };

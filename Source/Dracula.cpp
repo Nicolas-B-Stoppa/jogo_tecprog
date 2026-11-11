@@ -29,10 +29,6 @@ void Dracula::executar() {
         pSangue->executar();   // o sangue só anda se estiver ativo
 }
 
-void Dracula::mover() {
-    Inimigo::mover();   // por enquanto: vai-e-vem horizontal padrão
-}
-
 void Dracula::atirar(Cacador* pcaca) {
     if (!pcaca || !pSangue || pSangue->estaAtiva())
         return;   // só um tiro por vez
