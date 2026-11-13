@@ -16,8 +16,8 @@ public:
 
     void atacar(Inimigo* pIni);   // golpe de espada: o inimigo perde 1 vida e é empurrado
     bool estaArmado() const;                          // atacando com a espada
-    void setdentrogosma(bool dentro);
-    bool getdentrogosma() const;
+    float getViscosidade() const;
+    void setViscosidade(float v);   // a gosma chama a cada frame em que o caçador está nela
 protected:
     enum class Animacao { Parado, Andando, Pulando, Atacando };
 
@@ -31,11 +31,11 @@ protected:
     float tempoAtaque;         // quanto falta do ataque (s); > 0 = armado
     float tempoRecargaAtaque;  // quanto falta para poder atacar de novo (s)
     bool andando;              // apertou A ou D neste frame
+    float viscosidade;         // multiplica a velocidade; 1 = fora da gosma
 
     static constexpr float FORCA_PULO = 650.f;
     static constexpr float DURACAO_ATAQUE = 2.f;
     static constexpr float COOLDOWN_ATAQUE = 1.f;   // contado a partir do fim do ataque
-    bool dentrogosma;
 
     void atualizarAtaque();
 

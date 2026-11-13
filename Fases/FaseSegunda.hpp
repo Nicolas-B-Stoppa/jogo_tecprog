@@ -13,7 +13,7 @@ protected:
     void criarObstaculos() override;
 
     void criarDraculas();
-    void criarPlataforma();
+    void criarEstacas();
 private:
     const int maxChefoes;
 };

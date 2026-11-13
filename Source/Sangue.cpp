@@ -38,14 +38,12 @@ void Sangue::lancar(sf::Vector2f origem, sf::Vector2f alvo) {
     tempoQuadro = 0.f;
 
     ativo = true;
-    relogio.restart();   // o primeiro dt não conta o tempo em que ficou guardado
 }
 
 void Sangue::executar() {
     if (!ativo)
         return;
 
-    atualizarDt();
     posi.x += velX * dt;
 
     if (planando > 0.f)

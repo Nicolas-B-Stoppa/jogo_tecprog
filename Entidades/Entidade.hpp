@@ -18,6 +18,10 @@ public:
 
     virtual bool estaAtiva() const;   // false: a fase tira a entidade do jogo
     void pousar(float yTopo);  // coloca a entidade em cima de algo (usado pelo gerenciador de colisões)
+
+    // Mede o tempo do último frame. O Jogo chama uma vez por frame,
+    // antes de executar as entidades; todas leem o mesmo dt.
+    static void atualizarDt();
 protected:
     sf::Vector2f posi;
     sf::RectangleShape box;    // hitbox; só é desenhada se a entidade não tiver sprite
@@ -41,12 +45,11 @@ protected:
     // Física (vale para todas as entidades)
     float velY;                // velocidade vertical (positiva = caindo)
     bool noChao;
-    float dt;                  // tempo do último frame, em segundos
-    sf::Clock relogio;
+    static float dt;           // tempo do último frame, em segundos (igual para todas)
+    static sf::Clock relogio;
 
     static constexpr float GRAVIDADE = 1500.f;
 
-    void atualizarDt();
     void aplicarGravidade();
 
     static bool abrirTextura(sf::Texture& tex, const std::string& arquivo);   // carrega de assets/

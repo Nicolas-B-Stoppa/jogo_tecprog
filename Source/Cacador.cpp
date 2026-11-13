@@ -11,7 +11,7 @@ Cacador::Cacador(sf::Vector2f posicao)
       tempoAtaque(0.f),
       tempoRecargaAtaque(0.f),
       andando(false),
-      dentrogosma(false) {
+      viscosidade(1.f) {
     box.setFillColor(sf::Color(70, 130, 180));   // aparece se as imagens não carregarem
 
     abrirTextura(texParado, "cacador/parado.png");
@@ -24,7 +24,6 @@ Cacador::Cacador(sf::Vector2f posicao)
 Cacador::~Cacador() {}
 
 void Cacador::executar() {
-    atualizarDt();
     atualizarAtaque();    // fora do mover: continua contando durante o empurrão
     mover();
     escolherAnimacao();   // antes da gravidade: noChao ainda é o do último frame
@@ -55,12 +54,14 @@ void Cacador::mover() {
         return;
     }
 
+    // Dentro da gosma a viscosidade é menor que 1 e o caçador anda mais devagar.
+    float passo = velocidade * getViscosidade() * dt;
     if (sf::Keyboard::isKeyPressed(Tecla::A)) {
-        posi.x -= velocidade * dt;
+        posi.x -= passo;
         andando = true;
     }
     if (sf::Keyboard::isKeyPressed(Tecla::D)) {
-        posi.x += velocidade * dt;
+        posi.x += passo;
         andando = true;
     }
 
@@ -74,6 +75,9 @@ void Cacador::mover() {
 
     if (posi.x < 0.f)
         posi.x = 0.f;   // não sai pela esquerda da fase
+
+    // Volta ao normal; se ainda estiver na gosma, a colisão põe o valor de novo.
+    setViscosidade(1.f);
 }
 
 void Cacador::escolherAnimacao() {
@@ -123,12 +127,12 @@ bool Cacador::estaArmado() const {
 void Cacador::salvar() {
     // TODO: salvar posição, vidas, pontos...
 }
-void Cacador::setdentrogosma(bool dentro) {
-    dentrogosma = dentro;
+float Cacador::getViscosidade() const {
+    return viscosidade;
 }
 
-bool Cacador::getdentrogosma() const {
-    return dentrogosma;
+void Cacador::setViscosidade(float v) {
+    viscosidade = v;
 }
 
 } // namespace Entidades::Personagens

@@ -14,6 +14,7 @@ protected:
 
     void criarMorcegos();
     void criarVampiros();
+    void criarGosmas();
 private:
     const int maxINIMMedios;
 };

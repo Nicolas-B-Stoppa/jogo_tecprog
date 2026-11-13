@@ -6,14 +6,11 @@ namespace Entidades::Obstaculos {
 
 class Estaca : public Obstaculo {
 public:
-    Estaca();
+    Estaca(sf::Vector2f posicao);
     ~Estaca();
     void executar() override;
     void salvar() override;
     void obstacularizar(Personagens::Cacador* pJog) override;
-protected:
-    bool danoso;
-    
 };
 
 } // namespace Entidades::Obstaculos

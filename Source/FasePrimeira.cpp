@@ -2,6 +2,7 @@
 
 #include "Entidades/Personagens/Inimigos/Morcego.hpp"
 #include "Entidades/Personagens/Inimigos/Vampiro.hpp"
+#include "Entidades/Obstaculos/Gosma.hpp"
 
 namespace Fases {
 
@@ -19,7 +20,8 @@ void FasePrimeira::criarInimigos() {
 }
 
 void FasePrimeira::criarObstaculos() {
-    // TODO: gosmas e plataformas
+    criarPlataformas();
+    criarGosmas();
 }
 
 void FasePrimeira::criarMorcegos() {
@@ -32,6 +34,13 @@ void FasePrimeira::criarVampiros() {
     // Por enquanto um só, longe do morcego.
     Entidades::Personagens::Vampiro* pVampiro = new Entidades::Personagens::Vampiro({1700.f, getTopoChao() - 70.f});
     incluirInimigo(pVampiro);
+}
+
+void FasePrimeira::criarGosmas() {
+    // No chão, longe do morcego (1200) e do vampiro (1700).
+    const float xs[] = {600.f, 2300.f};
+    for (float x : xs)
+        incluirObstaculo(new Entidades::Obstaculos::Gosma({x, getTopoChao() - Entidades::Obstaculos::Gosma::TAMANHO.y}));
 }
 
 } // namespace Fases

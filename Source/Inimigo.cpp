@@ -17,7 +17,6 @@ Inimigo::Inimigo(sf::Vector2f posicao, sf::Vector2f tamanho, int vidas, float ve
 Inimigo::~Inimigo() {}
 
 void Inimigo::executar() {
-    atualizarDt();
     mover();
     // Empurra a origem junto: assim o vai-e-vem continua, só que mais para lá.
     origem.x += atualizarKnockback();

@@ -14,6 +14,7 @@ Jogo::~Jogo() {
 void Jogo::executar() {
     while (pGG->estaAberta()) {
         processarEventos();
+        Entidades::Entidade::atualizarDt();   // um dt só, para todas as entidades
 
         cacador.executar();
         fase1.executar();   // inimigos + colisões (inclusive com o chão)

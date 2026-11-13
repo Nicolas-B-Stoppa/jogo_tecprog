@@ -61,8 +61,8 @@ void GerenciadorColisoes::executar() {
     colisaoChao();   // primeiro todo mundo para em cima do chão
     colisaoInimigoJog();
     colisaoProjetilJog();
-    // TODO: descomentar quando estiver implementado
-    // colisaoObstaculoJog();
+    
+    colisaoObstaculoJog();
 }
 
 void GerenciadorColisoes::colisaoChao(Entidades::Entidade* pEnt) {

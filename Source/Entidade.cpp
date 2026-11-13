@@ -10,6 +10,9 @@
 
 namespace Entidades {
 
+float Entidade::dt = 0.f;
+sf::Clock Entidade::relogio;
+
 Entidade::Entidade(sf::Vector2f posicao, sf::Vector2f tamanho)
     : posi(posicao),
       box(tamanho),
@@ -26,8 +29,7 @@ Entidade::Entidade(sf::Vector2f posicao, sf::Vector2f tamanho)
       olhandoDireita(true),
       xAnterior(posicao.x),
       velY(0.f),
-      noChao(false),
-      dt(0.f) {
+      noChao(false) {
     box.setPosition(posi);
 }
 

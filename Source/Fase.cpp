@@ -2,6 +2,7 @@
 
 #include "Entidades/Personagens/Inimigos/Inimigo.hpp"
 #include "Entidades/Personagens/Inimigos/Dracula.hpp"
+#include "Entidades/Obstaculos/Plataforma.hpp"
 #include "Gerenciadores/GerenciadorGrafico.hpp"
 
 #include <string>
@@ -53,6 +54,24 @@ void Fase::incluirDracula(Entidades::Personagens::Dracula* pDrac) {
     incluirInimigo(pDrac);
     LDs.push_back(pDrac);
     gerColisoes.incluirProjetil(pDrac->getSangue());
+}
+
+void Fase::incluirObstaculo(Entidades::Obstaculos::Obstaculo* pObs) {
+    if (!pObs)
+        return;
+    listaEntidades.incluir(pObs);
+    gerColisoes.incluirObstaculo(pObs);
+}
+
+void Fase::criarPlataformas() {
+    // Mesmas posições nas duas fases; a altura é medida a partir do topo do chão.
+    const float posicoes[][2] = {
+        {900.f,  140.f},
+        {2600.f, 180.f},
+        {4000.f, 140.f},
+    };
+    for (const auto& p : posicoes)
+        incluirObstaculo(new Entidades::Obstaculos::Plataforma({p[0], getTopoChao() - p[1]}));
 }
 
 void Fase::setJogadores(Entidades::Personagens::Cacador* pj1, Entidades::Personagens::Cacador* pj2) {

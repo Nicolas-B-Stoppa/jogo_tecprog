@@ -20,7 +20,7 @@ Dracula::~Dracula() {
 }
 
 void Dracula::executar() {
-    Inimigo::executar();   // atualiza o dt
+    Inimigo::executar();   // move, gravidade e animação
 
     if (tempoRecarga > 0.f)
         tempoRecarga -= dt;

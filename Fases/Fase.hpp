@@ -12,6 +12,7 @@ class Inimigo;
 class Dracula;
 class Cacador;
 }
+namespace Entidades::Obstaculos { class Obstaculo; }
 
 namespace Fases {
 
@@ -36,6 +37,9 @@ protected:
 
     void incluirInimigo(Entidades::Personagens::Inimigo* pIni);   // guarda na fase e no gerenciador
     void incluirDracula(Entidades::Personagens::Dracula* pDrac);  // idem + registra o sangue
+    void incluirObstaculo(Entidades::Obstaculos::Obstaculo* pObs); // guarda na fase e no gerenciador
+
+    void criarPlataformas();   // as plataformas aparecem nas duas fases
 
     void draculasAtirarem();
     void removerDraculasMortos();   // tira da LDs antes da lista deletar

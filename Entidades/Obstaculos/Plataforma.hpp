@@ -6,13 +6,11 @@ namespace Entidades::Obstaculos {
 
 class Plataforma : public Obstaculo {
 public:
-    Plataforma();
+    Plataforma(sf::Vector2f posicao);
     ~Plataforma();
     void executar() override;
     void salvar() override;
     void obstacularizar(Personagens::Cacador* pJog) override;
-protected:
-    bool danoso;
 };
 
 } // namespace Entidades::Obstaculos
