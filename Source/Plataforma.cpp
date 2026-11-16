@@ -2,20 +2,32 @@
 
 #include "Entidades/Personagens/Cacador.hpp"
 
+#include <cmath>
+#include <cstdlib>
 #include <optional>
 
 namespace Entidades::Obstaculos {
 
 // Parte visível de plataforma.png: 603x171 a partir de (104, 161).
 Plataforma::Plataforma(sf::Vector2f posicao)
-    : Obstaculo(posicao, {200.f, 57.f}, false) {
+    : Obstaculo(posicao, {200.f, 57.f}, false),
+      movel(rand() % 100 < 20),
+      tempo(0.f),
+      yOrigem(posicao.y) {
     carregarSprite("obstaculos/plataforma.png", sf::IntRect({104, 161}, {603, 171}));
 }
 
 Plataforma::~Plataforma() {}
 
 void Plataforma::executar() {
-    // TODO
+    if (movel)
+        subirEDescer();
+}
+
+void Plataforma::subirEDescer() {
+    // Sobe e desce 40 px em torno de onde foi criada.
+    tempo += dt;
+    posi.y = yOrigem + 40.f * std::sin(tempo * 1.5f);
 }
 
 void Plataforma::salvar() {
