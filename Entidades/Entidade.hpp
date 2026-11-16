@@ -15,6 +15,9 @@ public:
     virtual void desenhar();   // desenha pelo gerenciador gráfico (pGG)
     sf::Vector2f getPosicao() const;
     sf::Vector2f getTamanho() const;
+    void setPosicao(sf::Vector2f p);
+    float getVelY() const;     // velocidade vertical (positiva = caindo)
+    void setVelY(float v);
 
     virtual bool estaAtiva() const;   // false: a fase tira a entidade do jogo
     void pousar(float yTopo);  // coloca a entidade em cima de algo (usado pelo gerenciador de colisões)

@@ -127,6 +127,18 @@ sf::Vector2f Entidade::getTamanho() const {
     return {largura, altura};
 }
 
+void Entidade::setPosicao(sf::Vector2f p) {
+    posi = p;
+}
+
+float Entidade::getVelY() const {
+    return velY;
+}
+
+void Entidade::setVelY(float v) {
+    velY = v;
+}
+
 bool Entidade::estaAtiva() const {
     return true;
 }

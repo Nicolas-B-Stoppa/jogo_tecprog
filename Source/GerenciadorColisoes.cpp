@@ -138,6 +138,16 @@ void GerenciadorColisoes::removerInimigosMortos() {
         }
     }
 }
+
+void GerenciadorColisoes::removerObstaculosQuebrados() {
+    for (std::list<Entidades::Obstaculos::Obstaculo*>::iterator it = LOs.begin(); it != LOs.end();) {
+        if (!(*it)->estaAtiva())
+            it = LOs.erase(it);
+        else
+            ++it;
+    }
+}
+
 void GerenciadorColisoes::colisaoObstaculoJog() {
     for(Entidades::Obstaculos::Obstaculo* pObs : LOs) {
         if(verificaColisao(pObs, pJog1)){

@@ -104,8 +104,10 @@ void Fase::executar() {
 
     gerColisoes.executar();   // depois de todo mundo se mover
 
-    // Inimigos sem vida: primeiro saem do gerenciador e da LDs, depois a lista deleta.
+    // Inimigos sem vida e obstáculos quebrados: primeiro saem do gerenciador
+    // e da LDs, depois a lista deleta.
     gerColisoes.removerInimigosMortos();
+    gerColisoes.removerObstaculosQuebrados();
     removerDraculasMortos();
     listaEntidades.removerInativas();
 }

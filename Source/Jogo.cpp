@@ -18,6 +18,12 @@ void Jogo::executar() {
 
         cacador.executar();
         fase1.executar();   // inimigos + colisões (inclusive com o chão)
+
+        // Sem vidas: o caçador morreu e o jogo acaba.
+        if (!cacador.estaAtiva()) {
+            pGG->fechar();
+            break;
+        }
         atualizarCamera();
 
         pGG->limpar();

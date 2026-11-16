@@ -38,6 +38,7 @@ public:
                       Entidades::Personagens::Cacador* pj2 = nullptr);   // jogador 2 é opcional
     void setTopoChao(float y);
     void removerInimigosMortos();   // tira da lista (não deleta: quem deleta é a fase)
+    void removerObstaculosQuebrados();   // idem, para obstáculos inativos (ex.: estaca quebrada)
 
     bool verificaColisao(Entidades::Entidade* pEnt1, Entidades::Entidade* pEnt2) const;
     void executar();   // trata todas as colisões (chamar a cada frame)
