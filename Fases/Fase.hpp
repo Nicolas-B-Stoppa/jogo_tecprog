@@ -40,6 +40,7 @@ protected:
     void incluirObstaculo(Entidades::Obstaculos::Obstaculo* pObs); // guarda na fase e no gerenciador
 
     void criarPlataformas();   // as plataformas aparecem nas duas fases
+    void criarMorcegos();      // os morcegos também
 
     void draculasAtirarem();
     void removerDraculasMortos();   // tira da LDs antes da lista deletar

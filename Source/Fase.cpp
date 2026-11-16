@@ -2,9 +2,11 @@
 
 #include "Entidades/Personagens/Inimigos/Inimigo.hpp"
 #include "Entidades/Personagens/Inimigos/Dracula.hpp"
+#include "Entidades/Personagens/Inimigos/Morcego.hpp"
 #include "Entidades/Obstaculos/Plataforma.hpp"
 #include "Gerenciadores/GerenciadorGrafico.hpp"
 
+#include <cstdlib>
 #include <string>
 
 #ifndef ASSETS_DIR
@@ -72,6 +74,24 @@ void Fase::criarPlataformas() {
     };
     for (const auto& p : posicoes)
         incluirObstaculo(new Entidades::Obstaculos::Plataforma({p[0], getTopoChao() - p[1]}));
+}
+
+void Fase::criarMorcegos() {
+    // 3 sempre aparecem e 2 têm 50% de chance.
+    Entidades::Personagens::Morcego* pMorcego1 = new Entidades::Personagens::Morcego({1000.f, 520.f});
+    incluirInimigo(pMorcego1);
+    Entidades::Personagens::Morcego* pMorcego2 = new Entidades::Personagens::Morcego({1900.f, 520.f});
+    incluirInimigo(pMorcego2);
+    Entidades::Personagens::Morcego* pMorcego3 = new Entidades::Personagens::Morcego({2800.f, 520.f});
+    incluirInimigo(pMorcego3);
+    if (rand() % 2) {
+        Entidades::Personagens::Morcego* pMorcego4 = new Entidades::Personagens::Morcego({3700.f, 520.f});
+        incluirInimigo(pMorcego4);
+    }
+    if (rand() % 2) {
+        Entidades::Personagens::Morcego* pMorcego5 = new Entidades::Personagens::Morcego({4600.f, 520.f});
+        incluirInimigo(pMorcego5);
+    }
 }
 
 void Fase::setJogadores(Entidades::Personagens::Cacador* pj1, Entidades::Personagens::Cacador* pj2) {

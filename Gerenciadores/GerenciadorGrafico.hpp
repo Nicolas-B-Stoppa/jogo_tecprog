@@ -12,12 +12,12 @@ private:
     sf::RenderWindow janela;
     sf::View camera;
 
-    GerenciadorGrafico();   // privado: ninguém cria outro de fora
-
-public:
     static constexpr unsigned int LARGURA_JANELA = 1280;
     static constexpr unsigned int ALTURA_JANELA = 720;
 
+    GerenciadorGrafico();   // privado: ninguém cria outro de fora
+
+public:
     static GerenciadorGrafico* getInstancia();
 
     // Não deixa copiar o singleton.

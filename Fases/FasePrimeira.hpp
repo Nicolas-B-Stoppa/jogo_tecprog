@@ -12,7 +12,6 @@ protected:
     void criarInimigos() override;
     void criarObstaculos() override;
 
-    void criarMorcegos();
     void criarVampiros();
     void criarGosmas();
 private:
