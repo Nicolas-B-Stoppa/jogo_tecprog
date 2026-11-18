@@ -11,15 +11,18 @@ namespace Entidades::Obstaculos {
 // Parte visível de plataforma.png: 603x171 a partir de (104, 161).
 Plataforma::Plataforma(sf::Vector2f posicao)
     : Obstaculo(posicao, {200.f, 57.f}, false),
-      movel(rand() % 100 < 20),
+      movel(rand()%100 > 40),
       tempo(0.f),
-      yOrigem(posicao.y) {
+      yOrigem(posicao.y),
+      empuxo(GRAVIDADE) {
     carregarSprite("obstaculos/plataforma.png", sf::IntRect({104, 161}, {603, 171}));
 }
 
 Plataforma::~Plataforma() {}
 
 void Plataforma::executar() {
+    velY -= empuxo * dt;   // anula o que a gravidade vai somar
+    aplicarGravidade();    // velY volta a 0: a plataforma não cai
     if (movel)
         subirEDescer();
 }

@@ -79,6 +79,8 @@ void GerenciadorColisoes::colisaoChao() {
         colisaoChao(pIni);
     colisaoChao(pJog1);
     colisaoChao(pJog2);
+    for (Entidades::Obstaculos::Obstaculo* pObs : LOs)
+        colisaoChao(pObs);
 
     // O sangue não pousa: encostou no chão, some.
     for (Entidades::Sangue* pSangue : LPs) {

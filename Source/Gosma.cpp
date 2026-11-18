@@ -18,6 +18,7 @@ Gosma::~Gosma() {}
 
 void Gosma::executar() {
     variarViscosidade();
+    aplicarGravidade();   // o gerenciador de colisões pousa no chão
 }
 
 void Gosma::variarViscosidade() {

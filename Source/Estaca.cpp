@@ -18,6 +18,7 @@ Estaca::~Estaca() {}
 
 void Estaca::executar() {
     quebrar();
+    aplicarGravidade();   // o gerenciador de colisões pousa no chão
 }
 
 void Estaca::quebrar() {
