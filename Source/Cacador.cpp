@@ -5,14 +5,29 @@
 namespace Entidades::Personagens {
 
 // Personagem(posicao, tamanho, vidas, velocidade)
-Cacador::Cacador(sf::Vector2f posicao)
-    : Personagem(posicao, {40.f, 70.f}, 3, 300.f),
+Cacador::Cacador(sf::Vector2f posicao, int numJogador)
+    : Personagem(posicao, {40.f, 70.f},100, 300.f),
       animAtual(Animacao::Parado),
       tempoAtaque(0.f),
       tempoRecargaAtaque(0.f),
       andando(false),
-      viscosidade(1.f) {
+      viscosidade(1.f),
+      numJogador(numJogador) {
     box.setFillColor(sf::Color(70, 130, 180));   // aparece se as imagens não carregarem
+
+    if (numJogador == 2) {
+        teclaEsquerda = sf::Keyboard::Key::Left;
+        teclaDireita = sf::Keyboard::Key::Right;
+        teclaPulo = sf::Keyboard::Key::Up;
+        teclaAtaque = sf::Keyboard::Key::Down;
+        sprite.setColor(sf::Color(255, 170, 170));   // avermelhado, para diferenciar do 1
+        box.setFillColor(sf::Color(180, 70, 70));
+    } else {
+        teclaEsquerda = sf::Keyboard::Key::A;
+        teclaDireita = sf::Keyboard::Key::D;
+        teclaPulo = sf::Keyboard::Key::W;
+        teclaAtaque = sf::Keyboard::Key::S;
+    }
 
     abrirTextura(texParado, "cacador/parado.png");
     abrirTextura(texAndar, "cacador/andar.png");
@@ -43,7 +58,6 @@ void Cacador::atualizarAtaque() {
 }
 
 void Cacador::mover() {
-    using Tecla = sf::Keyboard::Key;
     andando = false;
 
     // Durante o empurrão o jogador perde o controle e só é empurrado.
@@ -56,21 +70,21 @@ void Cacador::mover() {
 
     // Dentro da gosma a viscosidade é menor que 1 e o caçador anda mais devagar.
     float passo = velocidade * getViscosidade() * dt;
-    if (sf::Keyboard::isKeyPressed(Tecla::A)) {
+    if (sf::Keyboard::isKeyPressed(teclaEsquerda)) {
         posi.x -= passo;
         andando = true;
     }
-    if (sf::Keyboard::isKeyPressed(Tecla::D)) {
+    if (sf::Keyboard::isKeyPressed(teclaDireita)) {
         posi.x += passo;
         andando = true;
     }
 
     // Só pula se estiver pisando em algo.
-    if (sf::Keyboard::isKeyPressed(Tecla::W) && noChao)
+    if (sf::Keyboard::isKeyPressed(teclaPulo) && noChao)
         velY = -FORCA_PULO;
 
-    // Espaço: ataque de espada por DURACAO_ATAQUE, se não estiver recarregando.
-    if (sf::Keyboard::isKeyPressed(Tecla::Space) && !estaArmado() && tempoRecargaAtaque <= 0.f)
+    // Tecla de ataque: espada por DURACAO_ATAQUE, se não estiver recarregando.
+    if (sf::Keyboard::isKeyPressed(teclaAtaque) && !estaArmado() && tempoRecargaAtaque <= 0.f)
         tempoAtaque = DURACAO_ATAQUE;
 
     if (posi.x < 0.f)

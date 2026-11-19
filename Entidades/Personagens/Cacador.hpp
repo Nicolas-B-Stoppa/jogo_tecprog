@@ -8,7 +8,8 @@ class Inimigo;   // declaração antecipada: basta para usar Inimigo*
 
 class Cacador : public Personagem {
 public:
-    Cacador(sf::Vector2f posicao = {100.f, 300.f});
+    // numJogador 1: WASD + Espaço; numJogador 2: setas + Ctrl direito
+    Cacador(sf::Vector2f posicao = {100.f, 300.f}, int numJogador = 1);
     ~Cacador();
 
     void executar() override;
@@ -32,6 +33,13 @@ protected:
     float tempoRecargaAtaque;  // quanto falta para poder atacar de novo (s)
     bool andando;              // apertou A ou D neste frame
     float viscosidade;         // multiplica a velocidade; 1 = fora da gosma
+    int numJogador;            // 1 ou 2: escolhe as teclas
+
+    // Teclas deste jogador (escolhidas no construtor pelo numJogador)
+    sf::Keyboard::Key teclaEsquerda;
+    sf::Keyboard::Key teclaDireita;
+    sf::Keyboard::Key teclaPulo;
+    sf::Keyboard::Key teclaAtaque;
 
     static constexpr float FORCA_PULO = 650.f;
     static constexpr float DURACAO_ATAQUE = 2.f;
