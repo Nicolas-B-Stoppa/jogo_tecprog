@@ -36,6 +36,10 @@ void Inimigo::operator++(int) {
         Personagem::operator++(0);
 }
 
+int Inimigo::getMaldade() const {
+    return maldade;
+}
+
 void Inimigo::salvar() {
     // TODO: salvar posição, vidas, angulo...
 }

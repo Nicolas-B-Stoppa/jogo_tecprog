@@ -1,11 +1,15 @@
 #include "Menu.hpp"
 #include "Gerenciadores/GerenciadorGrafico.hpp"
 
+#include <string>
+
 Menu::Menu()
     : fonte(),
       fonteCarregada(false),
-      opcaoSelecionada(0) {
+      opcaoSelecionada(0),
+      ranking() {
     fonteCarregada = carregarFonte();
+    ranking.carregar();
 }
 
 Menu::~Menu() {}
@@ -134,14 +138,25 @@ Menu::Resultado Menu::executar() {
                 titulo.setPosition({640.f - titulo.getGlobalBounds().size.x / 2.f, 145.f});
                 pGG->desenhar(titulo);
 
-                sf::Text vazio(fonte, "Nenhum registro disponivel", 28);
-                vazio.setFillColor(sf::Color::White);
-                vazio.setPosition({640.f - vazio.getGlobalBounds().size.x / 2.f, 380.f});
-                pGG->desenhar(vazio);
+                if (ranking.getQuantidade() == 0) {
+                    sf::Text vazio(fonte, "Nenhum registro disponivel", 28);
+                    vazio.setFillColor(sf::Color::White);
+                    vazio.setPosition({640.f - vazio.getGlobalBounds().size.x / 2.f, 380.f});
+                    pGG->desenhar(vazio);
+                }
+                // Uma linha por registro: "1. NOME - 120"
+                for (int i = 0; i < ranking.getQuantidade(); ++i) {
+                    std::string texto = std::to_string(i + 1) + ". " + ranking.getNome(i) +
+                                        " - " + std::to_string(ranking.getPontos(i));
+                    sf::Text linha(fonte, texto, 24);
+                    linha.setFillColor(sf::Color::White);
+                    linha.setPosition({640.f - linha.getGlobalBounds().size.x / 2.f, 235.f + i * 28.f});
+                    pGG->desenhar(linha);
+                }
 
                 sf::Text voltar(fonte, "ENTER / ESC - VOLTAR", 22);
                 voltar.setFillColor(sf::Color(220, 200, 200));
-                voltar.setPosition({640.f - voltar.getGlobalBounds().size.x / 2.f, 520.f});
+                voltar.setPosition({640.f - voltar.getGlobalBounds().size.x / 2.f, 555.f});
                 pGG->desenhar(voltar);
             }
         } else if (escolhendoFase) {
@@ -234,4 +249,75 @@ Menu::Resultado Menu::executar() {
     }
 
     return Resultado::Sair;
+}
+void Menu::registrarPontuacao(int pontos) {
+    std::string nome;
+
+    while (pGG->estaAberta()) {
+        while (const std::optional evento = pGG->pollEvent()) {
+            if (evento->is<sf::Event::Closed>()) {
+                pGG->fechar();
+                return;   // fechou a janela: sai sem salvar
+            }
+
+            // Letras e números entram no nome (até 12 caracteres).
+            if (const sf::Event::TextEntered* texto = evento->getIf<sf::Event::TextEntered>()) {
+                char32_t c = texto->unicode;
+                bool letraOuNumero = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
+                                     (c >= '0' && c <= '9');
+                if (letraOuNumero && nome.size() < 12)
+                    nome += static_cast<char>(c);
+            }
+
+            if (const sf::Event::KeyPressed* tecla = evento->getIf<sf::Event::KeyPressed>()) {
+                if (tecla->code == sf::Keyboard::Key::Backspace && !nome.empty())
+                    nome.pop_back();
+                if (tecla->code == sf::Keyboard::Key::Enter) {
+                    if (nome.empty())
+                        nome = "JOGADOR";
+                    ranking.incluir(nome, pontos);
+                    return;
+                }
+            }
+        }
+
+        pGG->limpar();
+
+        sf::RectangleShape painel({700.f, 420.f});
+        painel.setOrigin({350.f, 210.f});
+        painel.setPosition({640.f, 400.f});
+        painel.setFillColor(sf::Color(55, 40, 65));
+        painel.setOutlineThickness(3.f);
+        painel.setOutlineColor(sf::Color(230, 220, 200));
+        pGG->desenhar(painel);
+
+        if (fonteCarregada) {
+            sf::Text titulo(fonte, "FIM DE JOGO", 44);
+            titulo.setFillColor(sf::Color(240, 220, 200));
+            titulo.setPosition({640.f - titulo.getGlobalBounds().size.x / 2.f, 220.f});
+            pGG->desenhar(titulo);
+
+            sf::Text textoPontos(fonte, "PONTOS: " + std::to_string(pontos), 30);
+            textoPontos.setFillColor(sf::Color::White);
+            textoPontos.setPosition({640.f - textoPontos.getGlobalBounds().size.x / 2.f, 300.f});
+            pGG->desenhar(textoPontos);
+
+            sf::Text pedido(fonte, "DIGITE SEU NOME:", 26);
+            pedido.setFillColor(sf::Color::White);
+            pedido.setPosition({640.f - pedido.getGlobalBounds().size.x / 2.f, 370.f});
+            pGG->desenhar(pedido);
+
+            sf::Text textoNome(fonte, nome + "_", 30);
+            textoNome.setFillColor(sf::Color(240, 220, 200));
+            textoNome.setPosition({640.f - textoNome.getGlobalBounds().size.x / 2.f, 420.f});
+            pGG->desenhar(textoNome);
+
+            sf::Text confirmar(fonte, "ENTER - SALVAR", 22);
+            confirmar.setFillColor(sf::Color(220, 200, 200));
+            confirmar.setPosition({640.f - confirmar.getGlobalBounds().size.x / 2.f, 520.f});
+            pGG->desenhar(confirmar);
+        }
+
+        pGG->mostrar();
+    }
 }

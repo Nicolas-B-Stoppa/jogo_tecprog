@@ -19,6 +19,7 @@ public:
     bool estaArmado() const;                          // atacando com a espada
     float getViscosidade() const;
     void setViscosidade(float v);   // a gosma chama a cada frame em que o caçador está nela
+    int getPontos() const;
 protected:
     enum class Animacao { Parado, Andando, Pulando, Atacando };
 
@@ -34,6 +35,7 @@ protected:
     bool andando;              // apertou A ou D neste frame
     float viscosidade;         // multiplica a velocidade; 1 = fora da gosma
     int numJogador;            // 1 ou 2: escolhe as teclas
+    int pontos;                // soma da maldade dos inimigos que este caçador matou
 
     // Teclas deste jogador (escolhidas no construtor pelo numJogador)
     sf::Keyboard::Key teclaEsquerda;

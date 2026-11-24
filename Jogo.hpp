@@ -15,9 +15,13 @@ private:
     Fases::Fase* pFase;
     Entidades::Personagens::Cacador* pJog1;
     Entidades::Personagens::Cacador* pJog2;   // nullptr: jogo de 1 jogador
+    int numFase;        // 1 ou 2: fase que está sendo jogada
+    int pontosMortos;   // pontos dos caçadores que já morreram (eles são deletados)
 
     void iniciarJogo(Menu::Resultado escolha);   // cria a fase e os caçadores escolhidos no menu
-    void jogar();                                // roda a fase até todos morrerem ou apertar ESC
+    bool jogar();                                // true: chegou ao fim da fase; false: todos morreram ou ESC
+    void passarParaFaseSegunda();                // troca a fase, mantendo os caçadores (vidas e pontos)
+    int calcularPontos();                        // soma dos pontos dos dois caçadores
     void encerrarJogo();                         // apaga a fase e os caçadores
 
     bool processarEventos();   // false: apertou ESC (volta para o menu)

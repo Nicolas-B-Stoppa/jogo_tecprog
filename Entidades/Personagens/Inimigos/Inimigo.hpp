@@ -17,6 +17,7 @@ public:
     virtual void danificar(Cacador* pcaca)=0;
 
     void operator++(int);   // inimigo++ : cura uma vida, sem passar de maxVidas
+    int getMaldade() const;  // pontos que o caçador ganha ao matar este inimigo
 
     
 protected:
