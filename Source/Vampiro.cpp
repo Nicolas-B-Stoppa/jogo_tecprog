@@ -12,6 +12,7 @@ Vampiro::Vampiro(sf::Vector2f posicao)
       esfomeado(std::rand() % 100 < 60) {
     carregarTextura("vampiro/andar.png", 7, 1.1f);
     setMaxVidas(4);   // ao se curar, não passa de 4
+    maldade = 3;
 }   // 60% de chance de estar esfomeado
 
 Vampiro::~Vampiro() {}

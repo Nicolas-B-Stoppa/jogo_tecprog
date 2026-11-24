@@ -19,7 +19,7 @@ public:
     void desenhar() override;   // sprite parado, ocupando a hitbox inteira
 protected:
     bool danoso;
-
+    
     // Carrega a imagem e usa só o pedaço "recorte" dela (a parte visível),
     // esticado para o tamanho da hitbox.
     void carregarSprite(const std::string& arquivo, sf::IntRect recorte);

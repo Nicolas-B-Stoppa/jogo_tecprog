@@ -10,8 +10,7 @@ namespace Entidades::Obstaculos {
 
 // Parte visível de plataforma.png: 603x171 a partir de (104, 161).
 Plataforma::Plataforma(sf::Vector2f posicao)
-    : Obstaculo(posicao, {200.f, 57.f}, false),
-      movel(rand()%100 > 40),
+    : Obstaculo(posicao, {200.f, 57.f}, rand()%100 > 40),   // danoso: sobe e desce
       tempo(0.f),
       yOrigem(posicao.y),
       empuxo(GRAVIDADE) {
@@ -23,7 +22,7 @@ Plataforma::~Plataforma() {}
 void Plataforma::executar() {
     velY -= empuxo * dt;   // anula o que a gravidade vai somar
     aplicarGravidade();    // velY volta a 0: a plataforma não cai
-    if (movel)
+    if (danoso)
         subirEDescer();
 }
 

@@ -56,6 +56,7 @@ public:
 
     float getLargura() const;
     float getTopoChao() const;   
+    bool chegouAoFim() const;    // algum caçador chegou ao fim do mapa
 };
 
 } // namespace Fases

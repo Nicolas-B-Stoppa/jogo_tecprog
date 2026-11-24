@@ -14,6 +14,7 @@ Morcego::Morcego(sf::Vector2f posicao)
       voo(0.f) {
     carregarTextura("morcego/voar.png", 6, 0.3f);
     setMaxVidas(2);   // o morcego vampiro se cura até 2
+    maldade = 1;
 }
 
 Morcego::~Morcego() {}

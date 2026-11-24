@@ -1,5 +1,6 @@
 #include "Fases/Fase.hpp"
 
+#include "Entidades/Personagens/Cacador.hpp"
 #include "Entidades/Personagens/Inimigos/Inimigo.hpp"
 #include "Entidades/Personagens/Inimigos/Dracula.hpp"
 #include "Entidades/Personagens/Inimigos/Morcego.hpp"
@@ -149,6 +150,15 @@ float Fase::getLargura() const {
 
 float Fase::getTopoChao() const {
     return topoChao;
+}
+
+bool Fase::chegouAoFim() const {
+    // Basta um caçador encostar nos últimos 100 px da fase.
+    if (pJog1 && pJog1->getPosicao().x + pJog1->getTamanho().x >= LARGURA - 100.f)
+        return true;
+    if (pJog2 && pJog2->getPosicao().x + pJog2->getTamanho().x >= LARGURA - 100.f)
+        return true;
+    return false;
 }
 
 } // namespace Fases

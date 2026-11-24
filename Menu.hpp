@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Ente.hpp"
+#include "Ranking.hpp"
 #include <SFML/Graphics.hpp>
 
 class Menu : public Ente {
@@ -8,6 +9,7 @@ private:
     sf::Font fonte;
     bool fonteCarregada;
     int opcaoSelecionada;
+    Ranking ranking;
 
     bool carregarFonte();
 
@@ -25,4 +27,5 @@ public:
     Menu();
     ~Menu();
     Resultado executar();
+    void registrarPontuacao(int pontos);   // fim da fase 2: pede o nome e salva no ranking
 };

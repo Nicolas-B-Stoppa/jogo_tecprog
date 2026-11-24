@@ -12,7 +12,8 @@ Cacador::Cacador(sf::Vector2f posicao, int numJogador)
       tempoRecargaAtaque(0.f),
       andando(false),
       viscosidade(1.f),
-      numJogador(numJogador) {
+      numJogador(numJogador),
+      pontos(0) {
     box.setFillColor(sf::Color(70, 130, 180));   // aparece se as imagens não carregarem
 
     if (numJogador == 2) {
@@ -132,6 +133,9 @@ void Cacador::atacar(Inimigo* pIni) {
 
     (*pIni)--;
     pIni->sofrerKnockback(this);   // this = o caçador que deu o golpe
+
+    if (!pIni->estaAtiva())          // esse golpe matou o inimigo
+        pontos += pIni->getMaldade();
 }
 
 bool Cacador::estaArmado() const {
@@ -141,6 +145,10 @@ bool Cacador::estaArmado() const {
 void Cacador::salvar() {
     // TODO: salvar posição, vidas, pontos...
 }
+int Cacador::getPontos() const {
+    return pontos;
+}
+
 float Cacador::getViscosidade() const {
     return viscosidade;
 }

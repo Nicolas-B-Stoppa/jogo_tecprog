@@ -8,6 +8,19 @@ namespace Personagens { class Dracula; }   // declaração antecipada: o Dracula
 namespace Personagens { class Cacador; }
 
 class Sangue : public Entidade {
+protected:
+    Personagens::Dracula* pDracula;
+    float velX;                // velocidade horizontal (px/s); negativa = esquerda
+    float planando;            // tempo (s) que ainda falta ignorando a gravidade
+    bool ativo;                // false: guardado, nem anda nem é desenhado
+
+    static constexpr float VELOCIDADE = 400.f;
+    static constexpr float TEMPO_PLANANDO = 0.5f;
+
+    
+    static constexpr float ESCALA_SPRITE = 1.5f;
+    static constexpr float ORIGEM_X_SPRITE = 26.f;   // meio da gota no quadro
+    static constexpr float ESPACO_ABAIXO = 20.f;  
 public:
     Sangue(sf::Vector2f posicao, Personagens::Dracula* pDono);
     ~Sangue();
@@ -24,19 +37,7 @@ public:
     bool estaAtiva() const override;
 
     Personagens::Dracula* getDracula() const;
-protected:
-    Personagens::Dracula* pDracula;
-    float velX;                // velocidade horizontal (px/s); negativa = esquerda
-    float planando;            // tempo (s) que ainda falta ignorando a gravidade
-    bool ativo;                // false: guardado, nem anda nem é desenhado
 
-    static constexpr float VELOCIDADE = 400.f;
-    static constexpr float TEMPO_PLANANDO = 0.5f;
-
-    
-    static constexpr float ESCALA_SPRITE = 1.5f;
-    static constexpr float ORIGEM_X_SPRITE = 26.f;   // meio da gota no quadro
-    static constexpr float ESPACO_ABAIXO = 20.f;     // px vazios entre a gota e o fim do quadro
 };
 
 } // namespace Entidades

@@ -11,6 +11,7 @@ Dracula::Dracula(sf::Vector2f posicao)
       tempoRecarga(0.f) {
     carregarTextura("dracula/andar.png", 6, 1.25f);
     setMaxVidas(5);   // começa com 3; o sangue acertando cura até 5
+    maldade = 7;
     pSangue = new Sangue(posi, this);   // this = este Drácula: o sangue sabe quem é o dono
 }
 

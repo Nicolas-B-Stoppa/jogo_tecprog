@@ -5,7 +5,9 @@ Jogo::Jogo()
       menu(),
       pFase(nullptr),
       pJog1(nullptr),
-      pJog2(nullptr) {}
+      pJog2(nullptr),
+      numFase(1),
+      pontosMortos(0) {}
 
 Jogo::~Jogo() {
     encerrarJogo();
@@ -25,17 +27,31 @@ void Jogo::executar() {
             continue;
 
         iniciarJogo(escolha);
-        jogar();
+        bool terminou = jogar();
+        // Terminou a fase 1: segue para a fase 2 com os mesmos caçadores.
+        if (terminou && numFase == 1) {
+            passarParaFaseSegunda();
+            terminou = jogar();
+        }
+        // Terminou a fase 2: libera salvar no ranking.
+        if (terminou) {
+            pGG->centralizarCamera(0.f, 1280.f);   // a tela do nome usa a câmera no começo
+            menu.registrarPontuacao(calcularPontos());
+        }
         encerrarJogo();
     }
 }
 
 void Jogo::iniciarJogo(Menu::Resultado escolha) {
     if (escolha == Menu::Resultado::NovoJogo1JogadorFase1 ||
-        escolha == Menu::Resultado::NovoJogo2JogadoresFase1)
+        escolha == Menu::Resultado::NovoJogo2JogadoresFase1) {
         pFase = new Fases::FasePrimeira();
-    else
+        numFase = 1;
+    } else {
         pFase = new Fases::FaseSegunda();
+        numFase = 2;
+    }
+    pontosMortos = 0;
 
     pJog1 = new Entidades::Personagens::Cacador({100.f, 300.f}, 1);
     if (escolha == Menu::Resultado::NovoJogo2JogadoresFase1 ||
@@ -45,10 +61,40 @@ void Jogo::iniciarJogo(Menu::Resultado escolha) {
     pFase->setJogadores(pJog1, pJog2);
 }
 
-void Jogo::jogar() {
+void Jogo::passarParaFaseSegunda() {
+    delete pFase;   // a fase deleta as entidades dela (os caçadores não são dela)
+    pFase = new Fases::FaseSegunda();
+    numFase = 2;
+
+    // Os caçadores voltam para o começo, com as mesmas vidas e pontos.
+    if (pJog1) {
+        pJog1->setPosicao({100.f, 300.f});
+        pJog1->setVelY(0.f);
+    }
+    if (pJog2) {
+        pJog2->setPosicao({160.f, 300.f});
+        pJog2->setVelY(0.f);
+    }
+
+    if (pJog1)
+        pFase->setJogadores(pJog1, pJog2);
+    else
+        pFase->setJogadores(pJog2, nullptr);
+}
+
+int Jogo::calcularPontos() {
+    int total = pontosMortos;
+    if (pJog1)
+        total += pJog1->getPontos();
+    if (pJog2)
+        total += pJog2->getPontos();
+    return total;
+}
+
+bool Jogo::jogar() {
     while (pGG->estaAberta()) {
         if (!processarEventos())
-            return;   // ESC: volta para o menu
+            return false;   // ESC: volta para o menu
 
         Entidades::Entidade::atualizarDt();   // um dt só, para todas as entidades
 
@@ -61,7 +107,10 @@ void Jogo::jogar() {
         // Sem vidas: o caçador sai do jogo. Sem nenhum, volta para o menu.
         tirarJogadoresMortos();
         if (!pJog1 && !pJog2)
-            return;
+            return false;
+
+        if (pFase->chegouAoFim())
+            return true;
 
         atualizarCamera();
 
@@ -73,16 +122,19 @@ void Jogo::jogar() {
             pJog2->desenhar();
         pGG->mostrar();
     }
+    return false;   // fechou a janela
 }
 
 void Jogo::tirarJogadoresMortos() {
     bool mudou = false;
     if (pJog1 && !pJog1->estaAtiva()) {
+        pontosMortos += pJog1->getPontos();   // os pontos dele continuam valendo
         delete pJog1;
         pJog1 = nullptr;
         mudou = true;
     }
     if (pJog2 && !pJog2->estaAtiva()) {
+        pontosMortos += pJog2->getPontos();
         delete pJog2;
         pJog2 = nullptr;
         mudou = true;
