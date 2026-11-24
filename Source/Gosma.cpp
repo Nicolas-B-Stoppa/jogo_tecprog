@@ -3,12 +3,13 @@
 #include "Entidades/Personagens/Cacador.hpp"
 
 #include <cmath>
+#include <cstdlib>
 
 namespace Entidades::Obstaculos {
 
 // Parte visível de gosma.png: 754x129 a partir de (46, 273).
 Gosma::Gosma(sf::Vector2f posicao)
-    : Obstaculo(posicao, TAMANHO, false),
+    : Obstaculo(posicao, TAMANHO, rand()%100 > 40),   // danoso: prende mais
       viscosidade(VISCOSIDADE_MEDIA),
       tempo(0.f) {
     carregarSprite("obstaculos/gosma.png", sf::IntRect({46, 273}, {754, 129}));
@@ -24,7 +25,10 @@ void Gosma::executar() {
 void Gosma::variarViscosidade() {
     // Oscila devagar: às vezes a gosma prende mais, às vezes menos.
     tempo += dt;
-    setViscosidade(VISCOSIDADE_MEDIA + VARIACAO * std::sin(tempo * RAPIDEZ_VARIACAO));
+    float v = VISCOSIDADE_MEDIA + VARIACAO * std::sin(tempo * RAPIDEZ_VARIACAO);
+    if (danoso)
+        v = v * 0.5f;   // gosma danosa: sobra metade da velocidade, prende o dobro
+    setViscosidade(v);
 }
 
 float Gosma::getViscosidade() const {
