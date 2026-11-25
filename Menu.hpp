@@ -24,8 +24,15 @@ public:
         Sair
     };
 
+    enum class ResultadoPausa {
+        Continuar,
+        Salvar,
+        Sair
+    };
+
     Menu();
     ~Menu();
     Resultado executar();
+    ResultadoPausa pausar();               // tela de pause (ESC durante o jogo)
     void registrarPontuacao(int pontos);   // fim da fase 2: pede o nome e salva no ranking
 };

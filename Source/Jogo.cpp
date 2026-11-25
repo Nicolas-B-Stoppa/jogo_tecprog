@@ -94,7 +94,7 @@ int Jogo::calcularPontos() {
 bool Jogo::jogar() {
     while (pGG->estaAberta()) {
         if (!processarEventos())
-            return false;   // ESC: volta para o menu
+            return false;   // saiu pelo pause: volta para o menu
 
         Entidades::Entidade::atualizarDt();   // um dt só, para todas as entidades
 
@@ -169,8 +169,20 @@ bool Jogo::processarEventos() {
 
         const sf::Event::KeyPressed* tecla = evento->getIf<sf::Event::KeyPressed>();
         if (tecla && tecla->code == sf::Keyboard::Key::Escape)
-            return false;
+            return pausar();
     }
+    return true;
+}
+
+bool Jogo::pausar() {
+    pGG->centralizarCamera(0.f, 1280.f);   // a tela do pause usa a câmera no começo
+    Menu::ResultadoPausa escolha = menu.pausar();
+
+    if (escolha == Menu::ResultadoPausa::Salvar) {
+        // TODO: salvar o jogo (próximo passo); por enquanto volta para o jogo
+    }
+    if (escolha == Menu::ResultadoPausa::Sair)
+        return false;   // volta ao menu principal
     return true;
 }
 

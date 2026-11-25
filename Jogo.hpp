@@ -24,7 +24,8 @@ private:
     int calcularPontos();                        // soma dos pontos dos dois caçadores
     void encerrarJogo();                         // apaga a fase e os caçadores
 
-    bool processarEventos();   // false: apertou ESC (volta para o menu)
+    bool processarEventos();   // false: saiu pelo pause (volta para o menu)
+    bool pausar();             // ESC: tela de pause; false = sair da partida
     void tirarJogadoresMortos();
     void atualizarCamera();    // segue o jogador 1 (ou o 2, se o 1 morreu)
 

@@ -22,8 +22,10 @@ void Estaca::executar() {
 }
 
 void Estaca::quebrar() {
-    if (durabilidade <= 0)
+    if (durabilidade <= 0) {
         quebrada = true;
+        danoso = false;   // quebrada: não fere mais
+    }
 }
 
 void Estaca::salvar() {
@@ -31,13 +33,14 @@ void Estaca::salvar() {
 }
 
 void Estaca::obstacularizar(Personagens::Cacador* pJog) {
-    // Já quebrada: não fere mais (com 2 jogadores, evita contar dois toques no mesmo frame).
-    if (!pJog || !danoso || durabilidade <= 0 || pJog->estaInvencivel())
+    if (!pJog || !danoso || pJog->estaInvencivel())
         return;   // logo depois de um dano, o caçador fica invencível por 1 s
 
     (*pJog)--;                     // perde uma vida
     pJog->sofrerKnockback(this);   // é jogado para longe da estaca
     durabilidade--;                // a cada toque ela se desgasta
+    // Se gastou tudo, quebra na hora: com 2 jogadores, o segundo já não leva dano no mesmo frame.
+    quebrar();
 }
 
 // Quebrada: o gerenciador de colisões a tira da lista de obstáculos
