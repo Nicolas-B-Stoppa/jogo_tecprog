@@ -20,7 +20,8 @@ protected:
     void carregarDraculas();
     void carregarEstacas();
 private:
-    const int maxChefoes;
+    const int maxChefoes;   // sorteado de 3 a 5: quantos Dráculas a fase tem
+    const int maxEstacas;   // sorteado de 3 a 5: quantas estacas a fase tem
 };
 
 } // namespace Fases

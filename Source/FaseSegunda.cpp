@@ -8,7 +8,9 @@
 
 namespace Fases {
 
-FaseSegunda::FaseSegunda(bool carregando) : maxChefoes(1) {
+FaseSegunda::FaseSegunda(bool carregando)
+    : maxChefoes(3 + rand() % 3),
+      maxEstacas(3 + rand() % 3) {
     if (carregando) {
         carregarInimigos();
         carregarObstaculos();
@@ -62,7 +64,7 @@ void FaseSegunda::carregarEstacas() {
 }
 
 void FaseSegunda::criarDraculas() {
-    // Mesmos lugares dos vampiros da fase 1. 3 sempre aparecem e 2 têm 50% de chance.
+    // Mesmos lugares dos vampiros da fase 1. 3 sempre aparecem; o 4º e o 5º dependem do maxChefoes.
     // 90 = altura do Drácula.
     Entidades::Personagens::Dracula* pDracula1 = new Entidades::Personagens::Dracula({1450.f, getTopoChao() - 90.f});
     incluirDracula(pDracula1);
@@ -70,21 +72,32 @@ void FaseSegunda::criarDraculas() {
     incluirDracula(pDracula2);
     Entidades::Personagens::Dracula* pDracula3 = new Entidades::Personagens::Dracula({3050.f, getTopoChao() - 90.f});
     incluirDracula(pDracula3);
-    if (rand() % 2) {
+    if (maxChefoes >= 4) {
         Entidades::Personagens::Dracula* pDracula4 = new Entidades::Personagens::Dracula({3850.f, getTopoChao() - 90.f});
         incluirDracula(pDracula4);
     }
-    if (rand() % 2) {
+    if (maxChefoes >= 5) {
         Entidades::Personagens::Dracula* pDracula5 = new Entidades::Personagens::Dracula({4650.f, getTopoChao() - 90.f});
         incluirDracula(pDracula5);
     }
 }
 
 void FaseSegunda::criarEstacas() {
-    // No chão, longe do Drácula (2100). 59 = altura da estaca.
-    const float xs[] = {1400.f, 3200.f};
-    for (float x : xs)
-        incluirObstaculo(new Entidades::Obstaculos::Estaca({x, getTopoChao() - 59.f}));
+    // No chão. 3 sempre aparecem; a 4ª e a 5ª dependem do maxEstacas. 59 = altura da estaca.
+    Entidades::Obstaculos::Estaca* pEstaca1 = new Entidades::Obstaculos::Estaca({600.f, getTopoChao() - 59.f});
+    incluirObstaculo(pEstaca1);
+    Entidades::Obstaculos::Estaca* pEstaca2 = new Entidades::Obstaculos::Estaca({1400.f, getTopoChao() - 59.f});
+    incluirObstaculo(pEstaca2);
+    Entidades::Obstaculos::Estaca* pEstaca3 = new Entidades::Obstaculos::Estaca({3200.f, getTopoChao() - 59.f});
+    incluirObstaculo(pEstaca3);
+    if (maxEstacas >= 4) {
+        Entidades::Obstaculos::Estaca* pEstaca4 = new Entidades::Obstaculos::Estaca({2000.f, getTopoChao() - 59.f});
+        incluirObstaculo(pEstaca4);
+    }
+    if (maxEstacas >= 5) {
+        Entidades::Obstaculos::Estaca* pEstaca5 = new Entidades::Obstaculos::Estaca({4300.f, getTopoChao() - 59.f});
+        incluirObstaculo(pEstaca5);
+    }
 }
 
 } // namespace Fases
