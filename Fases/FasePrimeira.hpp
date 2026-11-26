@@ -20,7 +20,8 @@ protected:
     void carregarVampiros();
     void carregarGosmas();
 private:
-    const int maxINIMMedios;
+    const int maxINIMMedios;   // sorteado de 3 a 5: quantos vampiros a fase tem
+    const int maxGosmas;       // sorteado de 3 a 5: quantas gosmas a fase tem
 };
 
 } // namespace Fases

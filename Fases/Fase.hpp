@@ -29,6 +29,9 @@ protected:
     Entidades::Personagens::Cacador* pJog1;
     Entidades::Personagens::Cacador* pJog2;
 
+    const int maxMorcegos;      // sorteado de 3 a 5: quantos morcegos a fase tem
+    const int maxPlataformas;   // sorteado de 3 a 5: quantas plataformas a fase tem
+
     static constexpr float LARGURA = 5000.f;      // comprimento da fase
     static constexpr float ALTURA_CHAO = 80.f;
 

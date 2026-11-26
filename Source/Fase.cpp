@@ -22,7 +22,9 @@ Fase::Fase()
     : fundo({LARGURA, pGG->getAltura()}),
       topoChao(pGG->getAltura() - ALTURA_CHAO),
       pJog1(nullptr),
-      pJog2(nullptr) {
+      pJog2(nullptr),
+      maxMorcegos(3 + rand() % 3),
+      maxPlataformas(3 + rand() % 3) {
     float alturaJanela = pGG->getAltura();
 
     // Background: escala a imagem para a altura da janela e repete na horizontal
@@ -69,28 +71,36 @@ void Fase::incluirObstaculo(Entidades::Obstaculos::Obstaculo* pObs) {
 
 void Fase::criarPlataformas() {
     // Mesmas posições nas duas fases; a altura é medida a partir do topo do chão.
-    const float posicoes[][2] = {
-        {900.f,  140.f},
-        {2600.f, 180.f},
-        {4000.f, 140.f},
-    };
-    for (const auto& p : posicoes)
-        incluirObstaculo(new Entidades::Obstaculos::Plataforma({p[0], getTopoChao() - p[1]}));
+    // 3 sempre aparecem; a 4ª e a 5ª dependem do maxPlataformas.
+    Entidades::Obstaculos::Plataforma* pPlataforma1 = new Entidades::Obstaculos::Plataforma({900.f, getTopoChao() - 140.f});
+    incluirObstaculo(pPlataforma1);
+    Entidades::Obstaculos::Plataforma* pPlataforma2 = new Entidades::Obstaculos::Plataforma({2600.f, getTopoChao() - 180.f});
+    incluirObstaculo(pPlataforma2);
+    Entidades::Obstaculos::Plataforma* pPlataforma3 = new Entidades::Obstaculos::Plataforma({4000.f, getTopoChao() - 140.f});
+    incluirObstaculo(pPlataforma3);
+    if (maxPlataformas >= 4) {
+        Entidades::Obstaculos::Plataforma* pPlataforma4 = new Entidades::Obstaculos::Plataforma({1500.f, getTopoChao() - 180.f});
+        incluirObstaculo(pPlataforma4);
+    }
+    if (maxPlataformas >= 5) {
+        Entidades::Obstaculos::Plataforma* pPlataforma5 = new Entidades::Obstaculos::Plataforma({3600.f, getTopoChao() - 180.f});
+        incluirObstaculo(pPlataforma5);
+    }
 }
 
 void Fase::criarMorcegos() {
-    // 3 sempre aparecem e 2 têm 50% de chance.
+    // 3 sempre aparecem; o 4º e o 5º dependem do maxMorcegos.
     Entidades::Personagens::Morcego* pMorcego1 = new Entidades::Personagens::Morcego({1000.f, 520.f});
     incluirInimigo(pMorcego1);
     Entidades::Personagens::Morcego* pMorcego2 = new Entidades::Personagens::Morcego({1900.f, 520.f});
     incluirInimigo(pMorcego2);
     Entidades::Personagens::Morcego* pMorcego3 = new Entidades::Personagens::Morcego({2800.f, 520.f});
     incluirInimigo(pMorcego3);
-    if (rand() % 2) {
+    if (maxMorcegos >= 4) {
         Entidades::Personagens::Morcego* pMorcego4 = new Entidades::Personagens::Morcego({3700.f, 520.f});
         incluirInimigo(pMorcego4);
     }
-    if (rand() % 2) {
+    if (maxMorcegos >= 5) {
         Entidades::Personagens::Morcego* pMorcego5 = new Entidades::Personagens::Morcego({4600.f, 520.f});
         incluirInimigo(pMorcego5);
     }
