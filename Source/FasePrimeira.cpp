@@ -4,13 +4,18 @@
 #include "Entidades/Obstaculos/Gosma.hpp"
 
 #include <cstdlib>
+#include <fstream>
 
 namespace Fases {
 
-FasePrimeira::FasePrimeira() : maxINIMMedios(3) {
-    
-    criarInimigos();
-    criarObstaculos();
+FasePrimeira::FasePrimeira(bool carregando) : maxINIMMedios(3) {
+    if (carregando) {
+        carregarInimigos();
+        carregarObstaculos();
+    } else {
+        criarInimigos();
+        criarObstaculos();
+    }
 }
 
 FasePrimeira::~FasePrimeira() {}
@@ -23,6 +28,36 @@ void FasePrimeira::criarInimigos() {
 void FasePrimeira::criarObstaculos() {
     criarPlataformas();
     criarGosmas();
+}
+
+void FasePrimeira::carregarInimigos() {
+    carregarMorcegos();
+    carregarVampiros();
+}
+
+void FasePrimeira::carregarObstaculos() {
+    carregarPlataformas();
+    carregarGosmas();
+}
+
+void FasePrimeira::carregarVampiros() {
+    std::ifstream arquivo("save/vampiros.txt");
+    float x, y;
+    while (arquivo >> x >> y) {
+        Entidades::Personagens::Vampiro* pVampiro = new Entidades::Personagens::Vampiro({x, y});
+        pVampiro->carregar(arquivo);
+        incluirInimigo(pVampiro);
+    }
+}
+
+void FasePrimeira::carregarGosmas() {
+    std::ifstream arquivo("save/gosmas.txt");
+    float x, y;
+    while (arquivo >> x >> y) {
+        Entidades::Obstaculos::Gosma* pGosma = new Entidades::Obstaculos::Gosma({x, y});
+        pGosma->carregar(arquivo);
+        incluirObstaculo(pGosma);
+    }
 }
 
 void FasePrimeira::criarVampiros() {

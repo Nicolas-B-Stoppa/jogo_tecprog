@@ -13,7 +13,6 @@ public:
     ~Inimigo();
 
     void executar() override;
-    void salvar() override;
     virtual void danificar(Cacador* pcaca)=0;
 
     void operator++(int);   // inimigo++ : cura uma vida, sem passar de maxVidas

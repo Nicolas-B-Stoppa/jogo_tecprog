@@ -34,6 +34,8 @@ protected:
 
     virtual void criarInimigos() = 0;
     virtual void criarObstaculos() = 0;
+    virtual void carregarInimigos() = 0;    // Continuar: lê dos arquivos de save/
+    virtual void carregarObstaculos() = 0;
 
     void incluirInimigo(Entidades::Personagens::Inimigo* pIni);   // guarda na fase e no gerenciador
     void incluirDracula(Entidades::Personagens::Dracula* pDrac);  // idem + registra o sangue
@@ -41,6 +43,8 @@ protected:
 
     void criarPlataformas();   // as plataformas aparecem nas duas fases
     void criarMorcegos();      // os morcegos também
+    void carregarPlataformas();   // lê save/plataformas.txt
+    void carregarMorcegos();      // lê save/morcegos.txt
 
     void draculasAtirarem();
     void removerDraculasMortos();   // tira da LDs antes da lista deletar
@@ -53,6 +57,7 @@ public:
                       Entidades::Personagens::Cacador* pj2 = nullptr);
     void executar();
     void desenhar();
+    void salvar();   // cada entidade da fase grava a sua linha no seu arquivo
 
     float getLargura() const;
     float getTopoChao() const;   

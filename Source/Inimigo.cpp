@@ -40,10 +40,6 @@ int Inimigo::getMaldade() const {
     return maldade;
 }
 
-void Inimigo::salvar() {
-    // TODO: salvar posição, vidas, angulo...
-}
-
 void Inimigo::avancarAngulo() {
     // velocidade / raio = velocidade angular (rad/s), assim a velocidade
     // máxima do inimigo é a própria "velocidade" do Personagem.

@@ -2,6 +2,8 @@
 
 #include "Entidades/Personagens/Cacador.hpp"
 
+#include <fstream>
+
 namespace Entidades::Obstaculos {
 
 // Parte visível de estaca.png: 263x308 a partir de (276, 73).
@@ -22,22 +24,32 @@ void Estaca::executar() {
 }
 
 void Estaca::quebrar() {
-    if (durabilidade <= 0)
+    if (durabilidade <= 0) {
         quebrada = true;
+        danoso = false;   // quebrada: não fere mais
+    }
 }
 
+// Linha: x y durabilidade danoso
 void Estaca::salvar() {
-    // Implementação da lógica de salvamento da estaca
+    std::ofstream arquivo("save/estacas.txt", std::ios::app);
+    arquivo << posi.x << " " << posi.y << " " << durabilidade << " " << danoso << "\n";
+}
+
+// A fase já leu x y (para chamar o construtor); aqui vem o resto.
+void Estaca::carregar(std::ifstream& arquivo) {
+    arquivo >> durabilidade >> danoso;
 }
 
 void Estaca::obstacularizar(Personagens::Cacador* pJog) {
-    // Já quebrada: não fere mais (com 2 jogadores, evita contar dois toques no mesmo frame).
-    if (!pJog || !danoso || durabilidade <= 0 || pJog->estaInvencivel())
+    if (!pJog || !danoso || pJog->estaInvencivel())
         return;   // logo depois de um dano, o caçador fica invencível por 1 s
 
     (*pJog)--;                     // perde uma vida
     pJog->sofrerKnockback(this);   // é jogado para longe da estaca
     durabilidade--;                // a cada toque ela se desgasta
+    // Se gastou tudo, quebra na hora: com 2 jogadores, o segundo já não leva dano no mesmo frame.
+    quebrar();
 }
 
 // Quebrada: o gerenciador de colisões a tira da lista de obstáculos

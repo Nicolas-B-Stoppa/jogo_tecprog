@@ -2,6 +2,7 @@
 #pragma once
 
 #include "Entidades/Sangue.hpp"
+#include <fstream>
 #include "Entidades/Personagens/Inimigos/Inimigo.hpp"
 
 namespace Entidades::Personagens {
@@ -13,6 +14,8 @@ public:
     void executar() override;   // executa o Drácula e o sangue dele
     void atirar(Cacador* pcaca);
     void danificar(Cacador* pcaca)override;
+    void salvar() override;   // save/draculas.txt: a linha dele e, logo abaixo, a do sangue
+    void carregar(std::ifstream& arquivo);   // o resto da linha dele e a linha do sangue
     Sangue* getSangue() const;
 protected:
     Sangue* pSangue;

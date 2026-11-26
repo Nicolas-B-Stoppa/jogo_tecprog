@@ -1,6 +1,7 @@
 #include "Entidades/Personagens/Inimigos/Vampiro.hpp"
 
 #include <cstdlib>
+#include <fstream>
 
 #include "Entidades/Personagens/Cacador.hpp"
 
@@ -28,6 +29,18 @@ void Vampiro::danificar(Cacador* pcaca){
     }
     (*pcaca)--;
     pcaca->sofrerKnockback(this);   // this = o vampiro que causou o dano
+}
+
+// Linha: x y vidas angulo origemX origemY esfomeado
+void Vampiro::salvar() {
+    std::ofstream arquivo("save/vampiros.txt", std::ios::app);
+    arquivo << posi.x << " " << posi.y << " " << vidas << " " << angulo << " "
+            << origem.x << " " << origem.y << " " << esfomeado << "\n";
+}
+
+// A fase já leu x y (para chamar o construtor); aqui vem o resto.
+void Vampiro::carregar(std::ifstream& arquivo) {
+    arquivo >> vidas >> angulo >> origem.x >> origem.y >> esfomeado;
 }
 
 } // namespace Entidades::Personagens

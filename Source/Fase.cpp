@@ -8,6 +8,7 @@
 #include "Gerenciadores/GerenciadorGrafico.hpp"
 
 #include <cstdlib>
+#include <fstream>
 #include <string>
 
 #ifndef ASSETS_DIR
@@ -95,6 +96,28 @@ void Fase::criarMorcegos() {
     }
 }
 
+// Cada linha começa com x y: lê os dois, cria a entidade nesse lugar
+// e ela mesma lê o resto da linha.
+void Fase::carregarPlataformas() {
+    std::ifstream arquivo("save/plataformas.txt");
+    float x, y;
+    while (arquivo >> x >> y) {
+        Entidades::Obstaculos::Plataforma* pPlataforma = new Entidades::Obstaculos::Plataforma({x, y});
+        pPlataforma->carregar(arquivo);
+        incluirObstaculo(pPlataforma);
+    }
+}
+
+void Fase::carregarMorcegos() {
+    std::ifstream arquivo("save/morcegos.txt");
+    float x, y;
+    while (arquivo >> x >> y) {
+        Entidades::Personagens::Morcego* pMorcego = new Entidades::Personagens::Morcego({x, y});
+        pMorcego->carregar(arquivo);
+        incluirInimigo(pMorcego);
+    }
+}
+
 void Fase::setJogadores(Entidades::Personagens::Cacador* pj1, Entidades::Personagens::Cacador* pj2) {
     pJog1 = pj1;
     pJog2 = pj2;
@@ -142,6 +165,13 @@ void Fase::desenhar() {
         if (pSangue && pSangue->estaAtiva())
             pSangue->desenhar();
     }
+}
+
+void Fase::salvar() {
+    // Cada entidade sabe em qual arquivo escrever (o salvar é virtual).
+    // O sangue não está na lista: o Drácula salva o dele.
+    for (int i = 0; i < listaEntidades.getTamanho(); i++)
+        listaEntidades[i]->salvar();
 }
 
 float Fase::getLargura() const {

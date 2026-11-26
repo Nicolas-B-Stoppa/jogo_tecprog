@@ -321,3 +321,90 @@ void Menu::registrarPontuacao(int pontos) {
         pGG->mostrar();
     }
 }
+
+Menu::ResultadoPausa Menu::pausar() {
+    // Começam como "já apertadas": o ESC que abriu o pause não fecha ele na hora.
+    bool anteriorCima = true;
+    bool anteriorBaixo = true;
+    bool anteriorEnter = true;
+    bool anteriorEscape = true;
+    int opcaoPausa = 0;   // 0 continuar, 1 salvar, 2 sair
+
+    while (pGG->estaAberta()) {
+        while (const std::optional evento = pGG->pollEvent()) {
+            if (evento->is<sf::Event::Closed>()) {
+                pGG->fechar();
+                return ResultadoPausa::Sair;
+            }
+        }
+
+        bool cima = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) ||
+                    sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up);
+        bool baixo = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) ||
+                     sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down);
+        bool enter = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter);
+        bool escape = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape);
+
+        if (cima && !anteriorCima)
+            opcaoPausa = (opcaoPausa + 2) % 3;
+        if (baixo && !anteriorBaixo)
+            opcaoPausa = (opcaoPausa + 1) % 3;
+
+        if (enter && !anteriorEnter) {
+            if (opcaoPausa == 0)
+                return ResultadoPausa::Continuar;
+            if (opcaoPausa == 1)
+                return ResultadoPausa::Salvar;
+            return ResultadoPausa::Sair;
+        }
+        if (escape && !anteriorEscape)
+            return ResultadoPausa::Continuar;
+
+        anteriorCima = cima;
+        anteriorBaixo = baixo;
+        anteriorEnter = enter;
+        anteriorEscape = escape;
+
+        pGG->limpar();
+
+        sf::RectangleShape painel({700.f, 460.f});
+        painel.setOrigin({350.f, 230.f});
+        painel.setPosition({640.f, 380.f});
+        painel.setFillColor(sf::Color(55, 40, 65));
+        painel.setOutlineThickness(3.f);
+        painel.setOutlineColor(sf::Color(230, 220, 200));
+        pGG->desenhar(painel);
+
+        for (int i = 0; i < 3; ++i) {
+            sf::RectangleShape botao({360.f, 62.f});
+            botao.setOrigin({180.f, 31.f});
+            botao.setPosition({640.f, 320.f + i * 90.f});
+            botao.setFillColor(i == opcaoPausa
+                                   ? sf::Color(180, 40, 60)
+                                   : sf::Color(80, 20, 40));
+            botao.setOutlineThickness(3.f);
+            botao.setOutlineColor(sf::Color(230, 220, 200));
+            pGG->desenhar(botao);
+        }
+
+        if (fonteCarregada) {
+            sf::Text titulo(fonte, "PAUSE", 44);
+            titulo.setFillColor(sf::Color(240, 220, 200));
+            titulo.setPosition({640.f - titulo.getGlobalBounds().size.x / 2.f, 185.f});
+            pGG->desenhar(titulo);
+
+            const char* textos[] = {"CONTINUAR", "SALVAR", "SAIR"};
+            for (int i = 0; i < 3; ++i) {
+                sf::Text opcao(fonte, textos[i], 28);
+                opcao.setFillColor(sf::Color::White);
+                opcao.setPosition({640.f - opcao.getGlobalBounds().size.x / 2.f,
+                                   302.f + i * 90.f});
+                pGG->desenhar(opcao);
+            }
+        }
+
+        pGG->mostrar();
+    }
+
+    return ResultadoPausa::Sair;
+}

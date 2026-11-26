@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entidades/Obstaculos/Obstaculo.hpp"
+#include <fstream>
 
 namespace Entidades::Obstaculos {
 
@@ -16,6 +17,7 @@ public:
     ~Plataforma();
     void executar() override;
     void salvar() override;
+    void carregar(std::ifstream& arquivo);   // lê o resto da linha (depois de x y)
     void obstacularizar(Personagens::Cacador* pJog) override;
 };
 

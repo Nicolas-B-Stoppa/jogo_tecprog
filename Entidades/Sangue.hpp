@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entidades/Entidade.hpp"
+#include <fstream>
 
 namespace Entidades {
 
@@ -27,6 +28,7 @@ public:
 
     void executar() override;
     void salvar() override;
+    void carregar(std::ifstream& arquivo);   // lê a linha inteira do sangue
     void desenhar() override;
 
     
