@@ -4,6 +4,8 @@
 #include "Entidades/Personagens/Inimigos/Dracula.hpp"
 #include "Gerenciadores/GerenciadorGrafico.hpp"
 
+#include <fstream>
+
 namespace Entidades {
 
 // Entidade(posicao, tamanho): a hitbox é o tamanho da gota (30x8) na escala do sprite
@@ -98,8 +100,18 @@ bool Sangue::estaAtiva() const {
     return ativo;
 }
 
+// Vai no arquivo do Drácula, na linha logo abaixo da dele.
+// Linha: ativo x y velX velY planando olhandoDireita
 void Sangue::salvar() {
-    // TODO: salvar posição
+    std::ofstream arquivo("save/draculas.txt", std::ios::app);
+    arquivo << ativo << " " << posi.x << " " << posi.y << " " << velX << " "
+            << velY << " " << planando << " " << olhandoDireita << "\n";
+}
+
+// O sangue já existe (o construtor do Drácula cria), então lê a linha inteira.
+void Sangue::carregar(std::ifstream& arquivo) {
+    arquivo >> ativo >> posi.x >> posi.y >> velX >> velY >> planando >> olhandoDireita;
+    xAnterior = posi.x;   // não deixa o sprite virar para o lado errado
 }
 
 Personagens::Dracula* Sangue::getDracula() const {

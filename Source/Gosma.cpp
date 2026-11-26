@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <cstdlib>
+#include <fstream>
 
 namespace Entidades::Obstaculos {
 
@@ -39,8 +40,15 @@ void Gosma::setViscosidade(float v) {
     viscosidade = v;
 }
 
+// Linha: x y danoso tempo
 void Gosma::salvar() {
-    // Implementação da lógica de salvamento da gosma
+    std::ofstream arquivo("save/gosmas.txt", std::ios::app);
+    arquivo << posi.x << " " << posi.y << " " << danoso << " " << tempo << "\n";
+}
+
+// A fase já leu x y (para chamar o construtor); aqui vem o resto.
+void Gosma::carregar(std::ifstream& arquivo) {
+    arquivo >> danoso >> tempo;
 }
 
 void Gosma::obstacularizar(Personagens::Cacador* pJog) {

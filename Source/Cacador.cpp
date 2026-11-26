@@ -2,6 +2,8 @@
 
 #include "Entidades/Personagens/Inimigos/Inimigo.hpp"
 
+#include <fstream>
+
 namespace Entidades::Personagens {
 
 // Personagem(posicao, tamanho, vidas, velocidade)
@@ -142,8 +144,16 @@ bool Cacador::estaArmado() const {
     return tempoAtaque > 0.f;
 }
 
+// Linha: numJogador x y velY vidas pontos
 void Cacador::salvar() {
-    // TODO: salvar posição, vidas, pontos...
+    std::ofstream arquivo("save/cacadores.txt", std::ios::app);
+    arquivo << numJogador << " " << posi.x << " " << posi.y << " " << velY << " "
+            << vidas << " " << pontos << "\n";
+}
+
+// O Jogo já leu numJogador x y (para chamar o construtor); aqui vem o resto.
+void Cacador::carregar(std::ifstream& arquivo) {
+    arquivo >> velY >> vidas >> pontos;
 }
 int Cacador::getPontos() const {
     return pontos;

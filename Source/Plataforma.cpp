@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <cstdlib>
+#include <fstream>
 #include <optional>
 
 namespace Entidades::Obstaculos {
@@ -32,8 +33,15 @@ void Plataforma::subirEDescer() {
     posi.y = yOrigem + 40.f * std::sin(tempo * 1.5f);
 }
 
+// Linha: x yOrigem danoso tempo
 void Plataforma::salvar() {
-    // TODO
+    std::ofstream arquivo("save/plataformas.txt", std::ios::app);
+    arquivo << posi.x << " " << yOrigem << " " << danoso << " " << tempo << "\n";
+}
+
+// A fase já leu x yOrigem (para chamar o construtor); aqui vem o resto.
+void Plataforma::carregar(std::ifstream& arquivo) {
+    arquivo >> danoso >> tempo;
 }
 
 // O gerenciador de colisões só detecta o encontro; aqui a plataforma decide

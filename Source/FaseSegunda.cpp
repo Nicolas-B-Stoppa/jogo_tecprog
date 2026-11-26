@@ -4,12 +4,18 @@
 #include "Entidades/Obstaculos/Estaca.hpp"
 
 #include <cstdlib>
+#include <fstream>
 
 namespace Fases {
 
-FaseSegunda::FaseSegunda() : maxChefoes(1) {
-    criarInimigos();
-    criarObstaculos();
+FaseSegunda::FaseSegunda(bool carregando) : maxChefoes(1) {
+    if (carregando) {
+        carregarInimigos();
+        carregarObstaculos();
+    } else {
+        criarInimigos();
+        criarObstaculos();
+    }
 }
 
 FaseSegunda::~FaseSegunda() {}
@@ -22,6 +28,37 @@ void FaseSegunda::criarInimigos() {
 void FaseSegunda::criarObstaculos() {
     criarPlataformas();
     criarEstacas();
+}
+
+void FaseSegunda::carregarInimigos() {
+    carregarDraculas();
+    carregarMorcegos();
+}
+
+void FaseSegunda::carregarObstaculos() {
+    carregarPlataformas();
+    carregarEstacas();
+}
+
+void FaseSegunda::carregarDraculas() {
+    // Cada Drácula ocupa duas linhas: a dele e a do sangue (o carregar dele lê as duas).
+    std::ifstream arquivo("save/draculas.txt");
+    float x, y;
+    while (arquivo >> x >> y) {
+        Entidades::Personagens::Dracula* pDracula = new Entidades::Personagens::Dracula({x, y});
+        pDracula->carregar(arquivo);
+        incluirDracula(pDracula);
+    }
+}
+
+void FaseSegunda::carregarEstacas() {
+    std::ifstream arquivo("save/estacas.txt");
+    float x, y;
+    while (arquivo >> x >> y) {
+        Entidades::Obstaculos::Estaca* pEstaca = new Entidades::Obstaculos::Estaca({x, y});
+        pEstaca->carregar(arquivo);
+        incluirObstaculo(pEstaca);
+    }
 }
 
 void FaseSegunda::criarDraculas() {

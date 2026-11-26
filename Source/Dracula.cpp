@@ -2,6 +2,8 @@
 
 #include "Entidades/Personagens/Cacador.hpp"
 
+#include <fstream>
+
 namespace Entidades::Personagens {
 
 // Inimigo(posicao, tamanho, vidas, velocidade, raio)
@@ -58,6 +60,27 @@ void Dracula::danificar(Cacador* pcaca) {
 
     (*pcaca)--;
     pcaca->sofrerKnockback(this);   // this = o drácula que causou o dano
+}
+
+// Linha: x y vidas angulo origemX origemY tempoRecarga
+// Logo abaixo vai a linha do sangue: assim ele continua ligado a este Drácula.
+void Dracula::salvar() {
+    {
+        std::ofstream arquivo("save/draculas.txt", std::ios::app);
+        arquivo << posi.x << " " << posi.y << " " << vidas << " " << angulo << " "
+                << origem.x << " " << origem.y << " " << tempoRecarga << "\n";
+    }   // fecha o arquivo antes do sangue escrever no mesmo arquivo
+
+    if (pSangue)
+        pSangue->salvar();
+}
+
+// A fase já leu x y (para chamar o construtor); aqui vem o resto da linha
+// e depois a linha do sangue, que está logo abaixo.
+void Dracula::carregar(std::ifstream& arquivo) {
+    arquivo >> vidas >> angulo >> origem.x >> origem.y >> tempoRecarga;
+    if (pSangue)
+        pSangue->carregar(arquivo);
 }
 
 } // namespace Entidades::Personagens

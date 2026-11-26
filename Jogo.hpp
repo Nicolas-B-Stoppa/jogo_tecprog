@@ -25,6 +25,8 @@ private:
     void encerrarJogo();                         // apaga a fase e os caçadores
 
     bool processarEventos();   // false: saiu pelo pause (volta para o menu)
+    void salvarJogo();         // grava tudo nos arquivos da pasta save/
+    bool carregarJogo();       // Continuar: lê a pasta save/; false = não tem jogo salvo
     bool pausar();             // ESC: tela de pause; false = sair da partida
     void tirarJogadoresMortos();
     void atualizarCamera();    // segue o jogador 1 (ou o 2, se o 1 morreu)

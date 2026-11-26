@@ -6,7 +6,7 @@ namespace Fases {
 
 class FaseSegunda : public Fase {
 public:
-    FaseSegunda();
+    FaseSegunda(bool carregando = false);   // true: lê do save em vez de sortear
     ~FaseSegunda();
 protected:
     void criarInimigos() override;
@@ -14,6 +14,11 @@ protected:
 
     void criarDraculas();
     void criarEstacas();
+
+    void carregarInimigos() override;
+    void carregarObstaculos() override;
+    void carregarDraculas();
+    void carregarEstacas();
 private:
     const int maxChefoes;
 };

@@ -2,6 +2,8 @@
 
 #include "Entidades/Personagens/Cacador.hpp"
 
+#include <fstream>
+
 namespace Entidades::Obstaculos {
 
 // Parte visível de estaca.png: 263x308 a partir de (276, 73).
@@ -28,8 +30,15 @@ void Estaca::quebrar() {
     }
 }
 
+// Linha: x y durabilidade danoso
 void Estaca::salvar() {
-    // Implementação da lógica de salvamento da estaca
+    std::ofstream arquivo("save/estacas.txt", std::ios::app);
+    arquivo << posi.x << " " << posi.y << " " << durabilidade << " " << danoso << "\n";
+}
+
+// A fase já leu x y (para chamar o construtor); aqui vem o resto.
+void Estaca::carregar(std::ifstream& arquivo) {
+    arquivo >> durabilidade >> danoso;
 }
 
 void Estaca::obstacularizar(Personagens::Cacador* pJog) {

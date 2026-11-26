@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entidades/Personagens/Personagem.hpp"
+#include <fstream>
 
 namespace Entidades::Personagens {
 
@@ -14,6 +15,7 @@ public:
 
     void executar() override;
     void salvar() override;
+    void carregar(std::ifstream& arquivo);   // lê o resto da linha: velY vidas pontos
 
     void atacar(Inimigo* pIni);   // golpe de espada: o inimigo perde 1 vida e é empurrado
     bool estaArmado() const;                          // atacando com a espada

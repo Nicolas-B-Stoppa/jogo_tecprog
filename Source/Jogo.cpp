@@ -1,5 +1,8 @@
 #include "Jogo.hpp"
 
+#include <filesystem>
+#include <fstream>
+
 Jogo::Jogo()
     : pGG(Gerenciadores::GerenciadorGrafico::getInstancia()),
       menu(),
@@ -22,11 +25,13 @@ void Jogo::executar() {
             pGG->fechar();
             break;
         }
-        // Continuar ainda não tem jogo salvo para carregar: volta para o menu.
-        if (escolha == Menu::Resultado::Continuar)
-            continue;
+        if (escolha == Menu::Resultado::Continuar) {
+            if (!carregarJogo())
+                continue;   // não tem jogo salvo: volta para o menu
+        } else {
+            iniciarJogo(escolha);
+        }
 
-        iniciarJogo(escolha);
         bool terminou = jogar();
         // Terminou a fase 1: segue para a fase 2 com os mesmos caçadores.
         if (terminou && numFase == 1) {
@@ -174,13 +179,72 @@ bool Jogo::processarEventos() {
     return true;
 }
 
+void Jogo::salvarJogo() {
+    std::filesystem::create_directory("save");
+
+    // Apaga o save anterior: cada entidade depois só acrescenta a sua linha.
+    std::ofstream("save/cacadores.txt");
+    std::ofstream("save/morcegos.txt");
+    std::ofstream("save/vampiros.txt");
+    std::ofstream("save/draculas.txt");
+    std::ofstream("save/plataformas.txt");
+    std::ofstream("save/gosmas.txt");
+    std::ofstream("save/estacas.txt");
+
+    // Linha: numFase pontosMortos
+    {
+        std::ofstream arquivo("save/jogo.txt");
+        arquivo << numFase << " " << pontosMortos << "\n";
+    }
+
+    if (pJog1)
+        pJog1->salvar();
+    if (pJog2)
+        pJog2->salvar();
+    pFase->salvar();
+}
+
+bool Jogo::carregarJogo() {
+    // Linha: numFase pontosMortos
+    std::ifstream arquivoJogo("save/jogo.txt");
+    if (!(arquivoJogo >> numFase >> pontosMortos))
+        return false;   // ainda não salvou nenhum jogo
+
+    // Linha: numJogador x y velY vidas pontos
+    // Só estão no arquivo os caçadores que estavam vivos quando salvou.
+    std::ifstream arquivoCacadores("save/cacadores.txt");
+    int num;
+    float x, y;
+    while (arquivoCacadores >> num >> x >> y) {
+        Entidades::Personagens::Cacador* pCacador = new Entidades::Personagens::Cacador({x, y}, num);
+        pCacador->carregar(arquivoCacadores);
+        if (num == 1)
+            pJog1 = pCacador;
+        else
+            pJog2 = pCacador;
+    }
+    if (!pJog1 && !pJog2)
+        return false;   // save sem caçador: não tem o que continuar
+
+    if (numFase == 1)
+        pFase = new Fases::FasePrimeira(true);   // true: lê as entidades do save
+    else
+        pFase = new Fases::FaseSegunda(true);
+
+    // O que sobrou vai na primeira posição.
+    if (pJog1)
+        pFase->setJogadores(pJog1, pJog2);
+    else
+        pFase->setJogadores(pJog2, nullptr);
+    return true;
+}
+
 bool Jogo::pausar() {
     pGG->centralizarCamera(0.f, 1280.f);   // a tela do pause usa a câmera no começo
     Menu::ResultadoPausa escolha = menu.pausar();
 
-    if (escolha == Menu::ResultadoPausa::Salvar) {
-        // TODO: salvar o jogo (próximo passo); por enquanto volta para o jogo
-    }
+    if (escolha == Menu::ResultadoPausa::Salvar)
+        salvarJogo();   // salva e volta para o jogo
     if (escolha == Menu::ResultadoPausa::Sair)
         return false;   // volta ao menu principal
     return true;

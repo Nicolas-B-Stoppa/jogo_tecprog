@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <cstdlib>
+#include <fstream>
 
 #include "Entidades/Personagens/Cacador.hpp"
 
@@ -38,6 +39,19 @@ void Morcego::mover() {
     float w = velocidade / raio;   // velocidade angular do vai-e-vem
     voo = GRAVIDADE + ALTURA_VOO * w * w * std::cos(angulo);
     velY -= voo * dt;
+}
+
+// Linha: x y vidas angulo origemX origemY vampiro
+void Morcego::salvar() {
+    std::ofstream arquivo("save/morcegos.txt", std::ios::app);
+    arquivo << posi.x << " " << posi.y << " " << vidas << " " << angulo << " "
+            << origem.x << " " << origem.y << " " << vampiro << "\n";
+}
+
+// A fase já leu x y (para chamar o construtor); aqui vem o resto.
+// O vampiro sorteado no construtor é trocado pelo que estava salvo.
+void Morcego::carregar(std::ifstream& arquivo) {
+    arquivo >> vidas >> angulo >> origem.x >> origem.y >> vampiro;
 }
 
 } // namespace Entidades::Personagens
