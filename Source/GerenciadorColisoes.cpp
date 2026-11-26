@@ -4,6 +4,8 @@
 #include "Entidades/Personagens/Cacador.hpp"
 #include "Entidades/Personagens/Inimigos/Inimigo.hpp"
 #include "Entidades/Personagens/Inimigos/Dracula.hpp"
+#include "Entidades/Personagens/Inimigos/Morcego.hpp"
+#include "Entidades/Obstaculos/Plataforma.hpp"
 #include "Entidades/Sangue.hpp"
 #include "Entidades/Obstaculos/Obstaculo.hpp"
 
@@ -59,6 +61,7 @@ bool GerenciadorColisoes::verificaColisao(Entidades::Entidade* pEnt1, Entidades:
 
 void GerenciadorColisoes::executar() {
     colisaoChao();   // primeiro todo mundo para em cima do chão
+    colisaoObstaculoInimigo();
     colisaoInimigoJog();
     colisaoProjetilJog();
     
@@ -160,6 +163,23 @@ void GerenciadorColisoes::colisaoObstaculoJog() {
             if(verificaColisao(pObs, pJog2)){
                 pObs->obstacularizar(pJog2);
             }
+        }
+    }
+}
+
+void GerenciadorColisoes::colisaoObstaculoInimigo() {
+    for (Entidades::Obstaculos::Obstaculo* pObs : LOs) {
+        // Só a plataforma segura inimigos (gosma e estaca não).
+        Entidades::Obstaculos::Plataforma* pPlat = dynamic_cast<Entidades::Obstaculos::Plataforma*>(pObs);
+        if (!pPlat)
+            continue;
+
+        for (Entidades::Personagens::Inimigo* pIni : LIs) {
+            // O morcego voa: se pousasse, ficaria grudado na plataforma.
+            if (dynamic_cast<Entidades::Personagens::Morcego*>(pIni))
+                continue;
+            if (verificaColisao(pPlat, pIni))
+                pPlat->sustentar(pIni);
         }
     }
 }

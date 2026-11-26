@@ -20,6 +20,14 @@ Morcego::Morcego(sf::Vector2f posicao)
 
 Morcego::~Morcego() {}
 
+void Morcego::executar() {
+    mover();   // o voo anula a gravidade
+    // Empurra a origem junto: assim o vai-e-vem continua, só que mais para lá.
+    origem.x += atualizarKnockback();
+    aplicarGravidade();
+    animar();
+}
+
 void Morcego::danificar(Cacador* pcaca) {
     if (!pcaca)
         return;

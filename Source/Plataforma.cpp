@@ -44,6 +44,18 @@ void Plataforma::carregar(std::ifstream& arquivo) {
     arquivo >> danoso >> tempo;
 }
 
+// Para os inimigos: se está caindo e o meio do corpo está acima do meio
+// da plataforma, fica em pé em cima dela. Se andar para fora da borda, cai.
+void Plataforma::sustentar(Entidade* pEnt) {
+    if (!pEnt || pEnt->getVelY() < 0.f)
+        return;   // subindo (pulo do vampiro): deixa passar
+
+    float centroEntY = pEnt->getPosicao().y + pEnt->getTamanho().y / 2.f;
+    float centroPlatY = posi.y + altura / 2.f;
+    if (centroEntY <= centroPlatY)
+        pEnt->pousar(posi.y);
+}
+
 // O gerenciador de colisões só detecta o encontro; aqui a plataforma decide
 // para que lado empurrar o caçador (o lado em que ele entrou menos nela).
 void Plataforma::obstacularizar(Personagens::Cacador* pJog) {

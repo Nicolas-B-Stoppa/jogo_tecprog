@@ -66,7 +66,8 @@ void FaseSegunda::carregarEstacas() {
 void FaseSegunda::criarDraculas() {
     // Mesmos lugares dos vampiros da fase 1. 3 sempre aparecem; o 4º e o 5º dependem do maxChefoes.
     // 90 = altura do Drácula.
-    Entidades::Personagens::Dracula* pDracula1 = new Entidades::Personagens::Dracula({1450.f, getTopoChao() - 90.f});
+    // O 1 nasce em cima da plataforma 1 (900 a 1100, 140 acima do chão); andando, ele cai.
+    Entidades::Personagens::Dracula* pDracula1 = new Entidades::Personagens::Dracula({980.f, getTopoChao() - 140.f - 90.f});
     incluirDracula(pDracula1);
     Entidades::Personagens::Dracula* pDracula2 = new Entidades::Personagens::Dracula({2250.f, getTopoChao() - 90.f});
     incluirDracula(pDracula2);
