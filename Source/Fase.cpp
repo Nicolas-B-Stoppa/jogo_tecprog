@@ -132,15 +132,10 @@ void Fase::setJogadores(Entidades::Personagens::Cacador* pj1, Entidades::Persona
     pJog1 = pj1;
     pJog2 = pj2;
     gerColisoes.setJogadores(pj1, pj2);
-}
 
-void Fase::draculasAtirarem() {
-    // O atirar já ignora se o caçador estiver longe ou se já tiver sangue no ar,
-    // então no máximo um dos dois jogadores vira alvo.
-    for (Entidades::Personagens::Dracula* pDrac : LDs) {
-        pDrac->atirar(pJog1);
-        pDrac->atirar(pJog2);
-    }
+    // Os Dráculas também precisam saber quem são os alvos do sangue.
+    for (Entidades::Personagens::Dracula* pDrac : LDs)
+        pDrac->setJogadores(pj1, pj2);
 }
 
 void Fase::removerDraculasMortos() {
@@ -153,8 +148,7 @@ void Fase::removerDraculasMortos() {
 }
 
 void Fase::executar() {
-    draculasAtirarem();
-    listaEntidades.executar();   // o Drácula executa o próprio sangue
+    listaEntidades.executar();   // o Drácula ataca e executa o próprio sangue
 
     gerColisoes.executar();   // depois de todo mundo se mover
 

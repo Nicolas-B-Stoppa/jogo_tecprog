@@ -11,18 +11,23 @@ class Dracula : public Inimigo {
 public:
     Dracula(sf::Vector2f posicao = {0.f, 0.f});
     ~Dracula();
-    void executar() override;   // executa o Drácula e o sangue dele
-    void atirar(Cacador* pcaca);
+    void executar() override;   // move e ataca
+    void setJogadores(Cacador* pj1, Cacador* pj2);   // os alvos do sangue
     void danificar(Cacador* pcaca)override;
     void salvar() override;   // save/draculas.txt: a linha dele e, logo abaixo, a do sangue
     void carregar(std::ifstream& arquivo);   // o resto da linha dele e a linha do sangue
     Sangue* getSangue() const;
 protected:
     Sangue* pSangue;
+    Cacador* pJog1;
+    Cacador* pJog2;
     float tempoRecarga;   // tempo (s) que ainda falta para poder atirar de novo
 
     static constexpr float ALCANCE_TIRO = 300.f;   // só atira se o caçador estiver até aqui
     static constexpr float COOLDOWN_TIRO = 5.f;    // intervalo mínimo entre dois tiros (s)
+
+    void atacar();                 // recarga, tenta atirar nos caçadores e executa o sangue
+    void atirar(Cacador* pcaca);
 
 };
 

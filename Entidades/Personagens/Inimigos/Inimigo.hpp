@@ -12,7 +12,6 @@ public:
             int vidas = 1, float velocidade = 150.f, float raio = 100.f);
     ~Inimigo();
 
-    void executar() override;
     virtual void danificar(Cacador* pcaca)=0;
 
     void operator++(int);   // inimigo++ : cura uma vida, sem passar de maxVidas

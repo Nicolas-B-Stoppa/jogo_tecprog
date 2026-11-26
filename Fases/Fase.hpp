@@ -49,7 +49,6 @@ protected:
     void carregarPlataformas();   // lê save/plataformas.txt
     void carregarMorcegos();      // lê save/morcegos.txt
 
-    void draculasAtirarem();
     void removerDraculasMortos();   // tira da LDs antes da lista deletar
 
 public:

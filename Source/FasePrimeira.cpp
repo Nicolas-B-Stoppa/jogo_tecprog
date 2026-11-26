@@ -64,7 +64,8 @@ void FasePrimeira::carregarGosmas() {
 
 void FasePrimeira::criarVampiros() {
     // 3 sempre aparecem; o 4º e o 5º dependem do maxINIMMedios. 70 = altura do vampiro.
-    Entidades::Personagens::Vampiro* pVampiro1 = new Entidades::Personagens::Vampiro({1450.f, getTopoChao() - 70.f});
+    // O 1 nasce em cima da plataforma 1 (900 a 1100, 140 acima do chão); andando, ele cai.
+    Entidades::Personagens::Vampiro* pVampiro1 = new Entidades::Personagens::Vampiro({980.f, getTopoChao() - 140.f - 70.f});
     incluirInimigo(pVampiro1);
     Entidades::Personagens::Vampiro* pVampiro2 = new Entidades::Personagens::Vampiro({2250.f, getTopoChao() - 70.f});
     incluirInimigo(pVampiro2);

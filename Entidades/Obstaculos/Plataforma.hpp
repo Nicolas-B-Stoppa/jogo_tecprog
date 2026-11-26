@@ -19,6 +19,7 @@ public:
     void salvar() override;
     void carregar(std::ifstream& arquivo);   // lê o resto da linha (depois de x y)
     void obstacularizar(Personagens::Cacador* pJog) override;
+    void sustentar(Entidade* pEnt);   // inimigo caindo em cima: fica em pé na plataforma
 };
 
 } // namespace Entidades::Obstaculos

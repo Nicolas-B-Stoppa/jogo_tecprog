@@ -16,14 +16,6 @@ Inimigo::Inimigo(sf::Vector2f posicao, sf::Vector2f tamanho, int vidas, float ve
 
 Inimigo::~Inimigo() {}
 
-void Inimigo::executar() {
-    mover();
-    // Empurra a origem junto: assim o vai-e-vem continua, só que mais para lá.
-    origem.x += atualizarKnockback();
-    aplicarGravidade();
-    animar();
-}
-
 void Inimigo::setMaxVidas(int max) {
     maxVidas = max;
     if (vidas > maxVidas)

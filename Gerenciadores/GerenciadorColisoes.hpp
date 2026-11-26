@@ -46,6 +46,7 @@ public:
     void colisaoChao();
     void colisaoInimigoJog();
     void colisaoObstaculoJog();
+    void colisaoObstaculoInimigo();   // inimigos (menos o morcego) ficam em cima das plataformas
     void colisaoProjetilJog();
 
 };

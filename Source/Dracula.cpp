@@ -10,6 +10,8 @@ namespace Entidades::Personagens {
 Dracula::Dracula(sf::Vector2f posicao)
     : Inimigo(posicao, {45.f, 90.f}, 3, 120.f, 150.f),
       pSangue(nullptr),
+      pJog1(nullptr),
+      pJog2(nullptr),
       tempoRecarga(0.f) {
     carregarTextura("dracula/andar.png", 6, 1.25f);
     setMaxVidas(5);   // começa com 3; o sangue acertando cura até 5
@@ -20,13 +22,32 @@ Dracula::Dracula(sf::Vector2f posicao)
 Dracula::~Dracula() {
     delete pSangue;   // o Drácula é dono do sangue
     pSangue = nullptr;
+    pJog1 = nullptr;   // os caçadores não são dele: só desfaz a ligação
+    pJog2 = nullptr;
 }
 
 void Dracula::executar() {
-    Inimigo::executar();   // move, gravidade e animação
+    mover();
+    // Empurra a origem junto: assim o vai-e-vem continua, só que mais para lá.
+    origem.x += atualizarKnockback();
+    aplicarGravidade();
+    atacar();
+    animar();
+}
 
+void Dracula::setJogadores(Cacador* pj1, Cacador* pj2) {
+    pJog1 = pj1;
+    pJog2 = pj2;
+}
+
+void Dracula::atacar() {
     if (tempoRecarga > 0.f)
         tempoRecarga -= dt;
+
+    // O atirar já ignora se o caçador estiver longe ou se já tiver sangue no ar,
+    // então no máximo um dos dois jogadores vira alvo.
+    atirar(pJog1);
+    atirar(pJog2);
 
     if (pSangue)
         pSangue->executar();   // o sangue só anda se estiver ativo

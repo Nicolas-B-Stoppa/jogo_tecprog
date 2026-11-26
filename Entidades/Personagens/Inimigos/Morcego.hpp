@@ -9,6 +9,7 @@ class Morcego : public Inimigo {
 public:
     Morcego(sf::Vector2f posicao = {0.f, 0.f});
     ~Morcego();
+    void executar() override;
     void danificar(Cacador* pcaca)override;
     void salvar() override;   // uma linha em save/morcegos.txt
     void carregar(std::ifstream& arquivo);   // lê o resto da linha (depois de x y)
