@@ -12,6 +12,7 @@ public:
             int vidas = 1, float velocidade = 150.f, float raio = 100.f);
     ~Inimigo();
 
+    virtual void executar() = 0;   // cada inimigo (Morcego, Vampiro, Drácula) faz o seu
     virtual void danificar(Cacador* pcaca)=0;
 
     void operator++(int);   // inimigo++ : cura uma vida, sem passar de maxVidas

@@ -16,6 +16,9 @@ public:
     // Levou dano: empurra para longe de quem causou e fica invencível por um tempo.
     void sofrerKnockback(const Entidade* pCausador);
     bool estaInvencivel() const;
+
+    virtual void executar() = 0;
+    virtual void salvar() = 0;
 protected:
     int vidas;
     float velocidade;
@@ -30,8 +33,6 @@ protected:
     bool estaSendoEmpurrado() const;
     float atualizarKnockback();   // desconta o tempo e empurra; devolve quanto andou em x
 
-    virtual void executar() = 0;
-    virtual void salvar() = 0;
     virtual void mover() = 0;
 };
 
