@@ -57,8 +57,8 @@ public:
 
     void setJogadores(Entidades::Personagens::Cacador* pj1,
                       Entidades::Personagens::Cacador* pj2 = nullptr);
-    void executar();
-    void desenhar();
+    void executar() override;
+    void desenhar() override;
     void salvar();   // cada entidade da fase grava a sua linha no seu arquivo
 
     float getLargura() const;

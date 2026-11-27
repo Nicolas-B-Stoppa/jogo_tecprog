@@ -30,9 +30,14 @@ public:
         Sair
     };
 
+private:
+    Resultado resultado;   // escolha feita no último executar()
+
+public:
     Menu();
     ~Menu();
-    Resultado executar();
+    void executar() override;          // guarda a escolha em "resultado"
+    Resultado getResultado() const;    // o que foi escolhido no último executar()
     ResultadoPausa pausar();               // tela de pause (ESC durante o jogo)
     void registrarPontuacao(int pontos);   // fim da fase 2: pede o nome e salva no ranking
 };

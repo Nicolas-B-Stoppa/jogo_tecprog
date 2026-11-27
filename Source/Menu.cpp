@@ -7,7 +7,8 @@ Menu::Menu()
     : fonte(),
       fonteCarregada(false),
       opcaoSelecionada(0),
-      ranking() {
+      ranking(),
+      resultado(Resultado::Sair) {
     fonteCarregada = carregarFonte();
     ranking.carregar();
 }
@@ -22,7 +23,7 @@ bool Menu::carregarFonte() {
 #endif
 }
 
-Menu::Resultado Menu::executar() {
+void Menu::executar() {
     // Começam como "já apertadas": uma tecla que veio segurada do jogo
     // (ex.: o ESC que voltou para o menu) não escolhe nada sem soltar antes.
     bool anteriorCima = true;
@@ -36,8 +37,10 @@ Menu::Resultado Menu::executar() {
 
     while (pGG->estaAberta()) {
         while (const std::optional evento = pGG->pollEvent()) {
-            if (evento->is<sf::Event::Closed>())
-                return Resultado::Sair;
+            if (evento->is<sf::Event::Closed>()) {
+                resultado = Resultado::Sair;
+                return;
+            }
         }
 
         bool cima = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) ||
@@ -58,13 +61,17 @@ Menu::Resultado Menu::executar() {
 
             if (enter && !anteriorEnter) {
                 if (doisJogadoresSelecionado) {
-                    return opcaoSelecionada == 0
-                               ? Resultado::NovoJogo2JogadoresFase1
-                               : Resultado::NovoJogo2JogadoresFase2;
+                    if (opcaoSelecionada == 0)
+                        resultado = Resultado::NovoJogo2JogadoresFase1;
+                    else
+                        resultado = Resultado::NovoJogo2JogadoresFase2;
+                } else {
+                    if (opcaoSelecionada == 0)
+                        resultado = Resultado::NovoJogo1JogadorFase1;
+                    else
+                        resultado = Resultado::NovoJogo1JogadorFase2;
                 }
-                return opcaoSelecionada == 0
-                           ? Resultado::NovoJogo1JogadorFase1
-                           : Resultado::NovoJogo1JogadorFase2;
+                return;
             }
 
             if (escape && !anteriorEscape) {
@@ -98,16 +105,22 @@ Menu::Resultado Menu::executar() {
             if (enter && !anteriorEnter) {
                 if (opcaoSelecionada == 0)
                     escolhendoJogadores = true;
-                if (opcaoSelecionada == 1)
-                    return Resultado::Continuar;
+                if (opcaoSelecionada == 1) {
+                    resultado = Resultado::Continuar;
+                    return;
+                }
                 if (opcaoSelecionada == 2)
                     mostrandoRanking = true;
-                if (opcaoSelecionada == 3)
-                    return Resultado::Sair;
+                if (opcaoSelecionada == 3) {
+                    resultado = Resultado::Sair;
+                    return;
+                }
             }
 
-            if (escape && !anteriorEscape)
-                return Resultado::Sair;
+            if (escape && !anteriorEscape) {
+                resultado = Resultado::Sair;
+                return;
+            }
         }
 
         anteriorCima = cima;
@@ -248,8 +261,13 @@ Menu::Resultado Menu::executar() {
         pGG->mostrar();
     }
 
-    return Resultado::Sair;
+    resultado = Resultado::Sair;   // a janela fechou
 }
+
+Menu::Resultado Menu::getResultado() const {
+    return resultado;
+}
+
 void Menu::registrarPontuacao(int pontos) {
     std::string nome;
 
