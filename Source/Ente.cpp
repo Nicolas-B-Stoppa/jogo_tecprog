@@ -12,3 +12,6 @@ Ente::Ente() {
 }
 
 Ente::~Ente() {}
+
+// Vazio de propósito: quem aparece na tela (Entidade, Fase...) sobrescreve.
+void Ente::desenhar() {}

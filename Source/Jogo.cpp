@@ -19,7 +19,8 @@ Jogo::~Jogo() {
 
 void Jogo::executar() {
     while (pGG->estaAberta()) {
-        Menu::Resultado escolha = menu.executar();
+        menu.executar();
+        Menu::Resultado escolha = menu.getResultado();
 
         if (escolha == Menu::Resultado::Sair) {
             pGG->fechar();
